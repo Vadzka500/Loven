@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "629800082652",
+    "project_id": "loven-683cc",
+    "storage_bucket": "loven-683cc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629800082652:android:89a870294ed86c254d6819",
+        "android_client_info": {
+          "package_name": "com.sidspace.loven"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZFtkCKeY9xk1ZFZ9iTyxMiZzT3bx_vBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

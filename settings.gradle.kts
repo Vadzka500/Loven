@@ -1,3 +1,7 @@
+include(":core:data")
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         google {
@@ -21,4 +25,28 @@ dependencyResolutionManagement {
 
 rootProject.name = "Loven"
 include(":app")
- 
+include(":core")
+include(":feature")
+
+include(":feature:game")
+include(":feature:game:data")
+include(":feature:game:domain")
+include(":feature:game:presentation")
+include(":core:domain")
+include(":feature:home")
+include(":feature:languages")
+include(":feature:modules")
+include(":feature:lessons")
+include(":feature:home:data")
+include(":feature:home:domain")
+include(":feature:home:presentation")
+include(":feature:languages:data")
+include(":feature:languages:domain")
+include(":feature:languages:presentation")
+include(":feature:lessons:domain")
+include(":feature:lessons:data")
+include(":feature:lessons:presentation")
+include(":feature:modules:data")
+include(":feature:modules:lib")
+include(":feature:modules:domain")
+include(":feature:modules:presentation")

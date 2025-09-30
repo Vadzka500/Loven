@@ -11,6 +11,31 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/data" />
+            <option value="$PROJECT_DIR$/core/domain" />
+            <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/game" />
+            <option value="$PROJECT_DIR$/feature/game/data" />
+            <option value="$PROJECT_DIR$/feature/game/domain" />
+            <option value="$PROJECT_DIR$/feature/game/presentation" />
+            <option value="$PROJECT_DIR$/feature/home" />
+            <option value="$PROJECT_DIR$/feature/home/data" />
+            <option value="$PROJECT_DIR$/feature/home/domain" />
+            <option value="$PROJECT_DIR$/feature/home/presentation" />
+            <option value="$PROJECT_DIR$/feature/languages" />
+            <option value="$PROJECT_DIR$/feature/languages/data" />
+            <option value="$PROJECT_DIR$/feature/languages/domain" />
+            <option value="$PROJECT_DIR$/feature/languages/presentation" />
+            <option value="$PROJECT_DIR$/feature/lessons" />
+            <option value="$PROJECT_DIR$/feature/lessons/data" />
+            <option value="$PROJECT_DIR$/feature/lessons/domain" />
+            <option value="$PROJECT_DIR$/feature/lessons/presentation" />
+            <option value="$PROJECT_DIR$/feature/modules" />
+            <option value="$PROJECT_DIR$/feature/modules/data" />
+            <option value="$PROJECT_DIR$/feature/modules/domain" />
+            <option value="$PROJECT_DIR$/feature/modules/lib" />
+            <option value="$PROJECT_DIR$/feature/modules/presentation" />
           </set>
         </option>
       </GradleProjectSettings>
