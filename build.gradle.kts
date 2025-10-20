@@ -12,13 +12,15 @@ plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kapt) apply false
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.crashlytics) apply false
+
 }
 
 allprojects.onEach { project ->
     project.afterEvaluate {
         with(project.plugins) {
             if (hasPlugin(libs.plugins.kotlin.android.get().pluginId)
-                // || hasPlugin(libs.plugins.kotlin.jvm.get().pluginId)
+                 || hasPlugin(libs.plugins.jetbrains.kotlin.jvm.get().pluginId)
             ) {
                 project.plugins.apply(libs.plugins.detekt.get().pluginId)
 

@@ -15,7 +15,15 @@ kotlin {
 dependencies{
 
     implementation(projects.core.domain)
+    implementation(projects.core.utils)
 
     implementation(libs.javax.inject)
     implementation(libs.kotlinx.coroutines.core)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(kotlin("test"))
+
+
 }

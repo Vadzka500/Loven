@@ -11,3 +11,10 @@ kotlin {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
 }
+
+dependencies{
+    implementation(projects.core.domain)
+
+    implementation(libs.javax.inject)
+    implementation(libs.kotlinx.coroutines.core)
+}

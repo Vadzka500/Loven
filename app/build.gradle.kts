@@ -3,16 +3,20 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.crashlytics)
+
 }
 
 android {
     namespace = "com.sidspace.loven"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.sidspace.loven"
-        minSdk = 31
-        targetSdk = 36
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -42,6 +46,22 @@ android {
 
 dependencies {
 
+    implementation(projects.core.navigation)
+    implementation(projects.core.ads)
+    implementation(projects.core.data)
+
+    implementation(libs.hilt.android)
+    //implementation(libs.google.firebase.auth.ktx)
+    //implementation(libs.firebase.auth.common)
+    implementation(libs.firebase.auth)
+
+
+
+    kapt(libs.hilt.compiler)
+
+
+    implementation(libs.compose.navigation)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -49,7 +69,8 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.material3)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,6 +82,13 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
 
-    implementation(platform(libs.firebase.bom))
+
     implementation(libs.firebase.firestore.ktx)
+
+    implementation(libs.firebase.crashlytics.ndk)
+
+    //auth
+    //implementation(libs.firebase.auth.ktx)
+    implementation(libs.play.services.auth)
+    //implementation(libs.google.firebase.firestore.ktx)
 }

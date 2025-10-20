@@ -6,7 +6,9 @@ object FirestoreCollections {
 
     const val MODULES = "modules"
 
-    const val LESSON = "lesson"
+    const val LESSON = "lessons"
 
     const val WORDS = "words"
+
+    const val USERS = "users"
 }

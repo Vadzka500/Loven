@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt)
 }
 
 android {
@@ -33,6 +37,28 @@ android {
 }
 
 dependencies {
+
+    implementation(projects.feature.lessons.domain)
+    implementation(projects.feature.lessons.data)
+
+    implementation(projects.core.domain)
+    implementation(projects.core.presentation)
+    implementation(projects.core.ads)
+
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.compose.ui.graphics)
+    kapt(libs.hilt.compiler)
+
+    implementation(libs.coil.compose)
+
+    implementation(libs.kotlin.serialization)
+    implementation(libs.compose.navigation)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.viewmodel.compose.navigatiom)
+    implementation(libs.androidx.material3)
+
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

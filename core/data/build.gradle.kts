@@ -36,11 +36,15 @@ android {
 
 dependencies {
 
+    implementation(projects.core.domain)
+    implementation(projects.core.utils)
+
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore.ktx)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -12,7 +12,20 @@
           "package_name": "com.sidspace.loven"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "629800082652-6a5unjhteoncd8v55ha1asorr11v2nj9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sidspace.loven",
+            "certificate_hash": "a90b0c70ad1d1d3b3f579efc0b55d128e121dfad"
+          }
+        },
+        {
+          "client_id": "629800082652-s7etv1crmf7supnd8i71stn0vfo7jc9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCZFtkCKeY9xk1ZFZ9iTyxMiZzT3bx_vBs"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629800082652-s7etv1crmf7supnd8i71stn0vfo7jc9r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

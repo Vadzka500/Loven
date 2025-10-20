@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -33,6 +35,19 @@ android {
 }
 
 dependencies {
+
+    implementation(projects.feature.lessons.domain)
+
+    implementation(projects.core.domain)
+    implementation(projects.core.data)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    //implementation(libs.javax.inject)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore.ktx)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
