@@ -1,5 +1,6 @@
 package com.sidspace.game.presentation.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -112,13 +113,42 @@ fun GameScreen(
 
     LaunchedEffect(Unit) {
         gameViewModel.initParams(idLanguage, idModule, idLesson)
+
+        gameViewModel.effect.collectLatest { effect ->
+            when (effect) {
+                is GameEffect.CorrectWords -> {
+
+                }
+
+                GameEffect.Exit -> {
+                    println("exit")
+                    onBack()
+                }
+
+                is GameEffect.InCorrectWords -> {
+
+                }
+
+                GameEffect.ToLessons -> {
+
+                }
+            }
+        }
+    }
+
+    BackHandler {
+        gameViewModel.onIntent(GameIntent.ShowExitDialog)
     }
 
     GameContent(state = state, effect = gameViewModel.effect, onSelectWords = { wordRu, wordTranslate ->
         gameViewModel.onIntent(GameIntent.SelectWords(wordRu, wordTranslate))
     }, toLessons = {
         gameViewModel.onIntent(GameIntent.ToLessons)
-    }, onBack = onBack, modifier = modifier)
+    }, onBack = {
+        gameViewModel.onIntent(GameIntent.ShowExitDialog)
+    }, onHideExitDialog = {
+        gameViewModel.onIntent(GameIntent.HideExitDialog)
+    }, onExit = { gameViewModel.onIntent(GameIntent.Exit) }, modifier = modifier)
 
 }
 
@@ -129,6 +159,8 @@ fun GameContent(
     onSelectWords: (String, String) -> Unit,
     toLessons: () -> Unit,
     onBack: () -> Unit,
+    onExit: () -> Unit,
+    onHideExitDialog: () -> Unit,
     effect: SharedFlow<GameEffect>,
     modifier: Modifier = Modifier
 ) {
@@ -161,21 +193,74 @@ fun GameContent(
     }) { result ->
         when (val data = result) {
             GameResult.EndLives -> {
-                EndLivesScreen(toLessons = toLessons)
+                EndLivesScreen(toLessons = onExit)
             }
 
             GameResult.EndTime -> {
-                EndTimeScreen(toLessons = toLessons)
+                EndTimeScreen(toLessons = onExit)
             }
 
             GameResult.None -> Unit
             is GameResult.SuccessGame -> {
-                EndGameScreen(data.countStar, data.countError, toLessons = toLessons)
+                EndGameScreen(data.countStar, data.countError, toLessons = onExit)
             }
         }
     }
 
+    if (state.value.isShowExitDialog) {
+        ShowExitDialog(onDismiss = onHideExitDialog, onExit = onExit)
+    }
 
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ShowExitDialog(onDismiss: () -> Unit, onExit: () -> Unit, modifier: Modifier = Modifier) {
+
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false
+    )
+
+
+    ModalBottomSheet(
+        sheetState = sheetState, onDismissRequest = {
+            onDismiss()
+        }, dragHandle = null
+    ) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                //.fillMaxHeight(0.5f) // можно ограничить высоту
+                .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            val textBody = "Вы действительно хотите выйти из урока?"
+
+            Text(
+                textBody,
+                fontFamily = Sf_compact,
+                fontWeight = FontWeight.Medium,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    onExit()
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text("Выйти")
+            }
+        }
+    }
 }
 
 
@@ -214,6 +299,10 @@ fun InitWords(
 
                 GameEffect.ToLessons -> {
                     onBack()
+                }
+
+                else -> {
+
                 }
             }
         }
@@ -280,7 +369,7 @@ fun InitWords(
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp))
                     .clickable {
-
+                        onBack()
                     }
                     .padding(8.dp),
                 text = "Выйти",
@@ -450,7 +539,15 @@ fun WordColumnList(
                                 },
                             backgroundColor = backgroundColor
                         ) {
-                            Text(it, color = color.value, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                            Text(
+                                it,
+                                color = color.value,
+                                fontSize = 16.sp,
+                                fontFamily = Sf_compact,
+                                fontWeight = FontWeight.Medium,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(horizontal = 8.dp)
+                            )
                         }
                     }
 

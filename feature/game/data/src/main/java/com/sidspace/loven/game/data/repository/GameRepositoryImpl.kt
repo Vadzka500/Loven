@@ -48,9 +48,22 @@ class GameRepositoryImpl @Inject constructor(
 
         val querySnapshot = lessonsCollection.whereEqualTo("idLesson", lessonId).get().await()
 
-        if ((querySnapshot.documents.first().get("starCount") as Long) < starCount) {
+        val starDiff = starCount - (querySnapshot.documents.first().get("starCount") as Long)
+
+        if (starDiff > 0) {
             querySnapshot.documents.first().reference.update("starCount", starCount).await()
         }
+
+        val module = userSnapshot.reference.collection(FirestoreCollections.LANGUAGE).document(languageId)
+            .collection(FirestoreCollections.MODULES).document(moduleId).get().await()
+
+        val data = hashMapOf(
+            "starsCount" to (module.get("starsCount") as Long + starDiff)
+        )
+
+        userSnapshot.reference.collection(FirestoreCollections.LANGUAGE).document(languageId)
+            .collection(FirestoreCollections.MODULES).document(moduleId).set(data).await()
+
 
         return DomainResult.Success(Unit)
     }

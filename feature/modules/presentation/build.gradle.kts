@@ -49,6 +49,7 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     implementation(libs.coil.compose)
+    implementation(libs.icons)
 
     implementation(libs.kotlin.serialization)
     implementation(libs.compose.navigation)

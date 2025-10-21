@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.sidspace.loven.core.presentation.model.ResultUi
+import com.sidspace.loven.core.presentation.uikit.Sf_compact
 import com.sidspace.loven.languages.presentation.model.LanguageUi
 
 @Composable
@@ -158,7 +159,9 @@ fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (Stri
                         onTap = {
                             isPressed = !isPressed
 
-                            onClick(item.id)
+                            if (item.isEnable) {
+                                onClick(item.id)
+                            }
                         }
 
                     )
@@ -191,7 +194,7 @@ fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (Stri
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        item.nameLanguage, fontSize = 24.sp, fontWeight = FontWeight.Bold
+                        item.nameLanguage, fontSize = 24.sp, fontWeight = FontWeight.Bold, fontFamily = Sf_compact
                     )
 
                     if (!item.isEnable) {
@@ -199,6 +202,7 @@ fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (Stri
                             text = "Скоро",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium,
+                            fontFamily = Sf_compact,
                             color = Color.Gray,
                             modifier = Modifier.padding(top = 8.dp)
                         )

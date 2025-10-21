@@ -295,7 +295,10 @@ fun LessonItem(
 
         var isPressed by remember { mutableStateOf(true) }
 
-        isPressed = item.starCount == null
+        LaunchedEffect(Unit) {
+            isPressed = item.starCount == null
+        }
+        //isPressed = item.starCount == null
 
         var isTap by remember { mutableStateOf(false) }
 

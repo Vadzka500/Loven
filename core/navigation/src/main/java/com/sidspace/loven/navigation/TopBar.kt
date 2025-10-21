@@ -34,6 +34,7 @@ import com.sidspace.game.presentation.navigation.GameRoute
 import com.sidspace.loven.authorization.presentation.navigation.Authorization
 import com.sidspace.loven.core.presentation.R
 import com.sidspace.loven.core.presentation.screen.HealthDialog
+import com.sidspace.loven.core.presentation.uikit.Sf_compact
 import com.sidspace.loven.home.presentation.navigation.Home
 import com.sidspace.loven.languages.presentation.navigation.Language
 import com.sidspace.loven.lessons.presentation.navigation.LessonsRoute
@@ -118,12 +119,12 @@ fun TopBarContent(
     var showDialog by remember { mutableStateOf(false) }
 
     Row(modifier = modifier) {
-        Text(text = title)
+        Text(text = title, fontFamily = Sf_compact, fontWeight = FontWeight.Medium)
         Spacer(modifier = Modifier.weight(1f))
         Row(modifier = Modifier.clickable(interactionSource = interactionSource, indication = null) {
             showDialog = true
         }) {
-            Text(lifeCount.toString(), fontWeight = FontWeight.Medium, fontSize = 22.sp)
+            Text(lifeCount.toString(), fontWeight = FontWeight.Medium, fontSize = 22.sp, fontFamily = Sf_compact)
             Image(
                 painter = painterResource(R.drawable.img_heart),
                 contentDescription = null,

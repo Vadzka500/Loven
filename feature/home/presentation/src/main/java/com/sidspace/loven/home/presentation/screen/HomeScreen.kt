@@ -53,6 +53,7 @@ import com.sidspace.loven.core.presentation.R
 import com.sidspace.loven.core.presentation.model.ResultUi
 import com.sidspace.loven.core.presentation.model.UserUi
 import com.sidspace.loven.core.presentation.screen.HealthDialog
+import com.sidspace.loven.core.presentation.uikit.Sf_compact
 import com.sidspace.loven.utils.GameConstants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -221,6 +222,7 @@ fun ChangeUserContent(changeUser: () -> Unit, modifier: Modifier) {
             text = "Сменить аккаунт",
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
+            fontFamily = Sf_compact,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
         )
     }
@@ -309,7 +311,7 @@ fun GameButton(toGameClick: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
 
-                Text("К игре", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                Text("К игре", fontSize = 24.sp, fontWeight = FontWeight.Bold, fontFamily = Sf_compact)
             }
         }
 
@@ -329,7 +331,7 @@ fun UserContent(user: UserUi, onShowAds: () -> Unit, modifier: Modifier = Modifi
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text("Привет, ${user.name}", fontSize = 24.sp, fontWeight = FontWeight.Medium)
+        Text("Привет, ${user.name}", fontSize = 24.sp, fontWeight = FontWeight.Medium, fontFamily = Sf_compact)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -342,7 +344,7 @@ fun UserContent(user: UserUi, onShowAds: () -> Unit, modifier: Modifier = Modifi
                 }
                 .padding(8.dp)
         ) {
-            Text(user.lifeCount.toString(), fontWeight = FontWeight.Medium, fontSize = 22.sp)
+            Text(user.lifeCount.toString(), fontWeight = FontWeight.Medium, fontSize = 22.sp, fontFamily = Sf_compact)
 
             Image(
                 painter = painterResource(R.drawable.img_heart),

@@ -42,6 +42,8 @@ dependencies {
     implementation(projects.feature.game.domain)
     implementation(projects.feature.game.data)
 
+    implementation(libs.androidx.ui.tooling.preview)
+
     implementation(projects.core.domain)
     implementation(projects.core.utils)
     implementation(projects.core.presentation)

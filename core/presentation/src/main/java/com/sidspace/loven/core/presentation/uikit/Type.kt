@@ -11,5 +11,6 @@ import com.sidspace.loven.core.presentation.R
 
 val Sf_compact = FontFamily(
     Font(R.font.sf_compact_rounded_medium, FontWeight.Normal),
-    Font(R.font.sf_compact_rounded_bold, FontWeight.Bold)
+    Font(R.font.sf_compact_rounded_bold, FontWeight.Bold),
+    Font(R.font.sf_compact_rounded_regular, FontWeight.Normal)
 )

@@ -6,22 +6,30 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,16 +43,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.sidspace.loven.core.presentation.R
 import com.sidspace.loven.core.presentation.model.ResultUi
+import com.sidspace.loven.core.presentation.uikit.Sf_compact
 import com.sidspace.loven.modules.presentation.model.ModuleUi
 
 @Composable
@@ -67,20 +80,20 @@ fun ModuleScreen(
 @Composable
 fun ModuleContent(state: State<ModuleState>, onClick: (String, String) -> Unit, modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
-        AnimatedContent(targetState = state.value.listModules) { result ->
-            when (result) {
+        //AnimatedContent(targetState = state.value.listModules) { result ->
+            when (val data = state.value.listModules) {
                 ResultUi.Error -> Unit
                 ResultUi.Loading -> Unit
-                is ResultUi.Success -> ModuleList(list = result.data, onClick = onClick)
+                is ResultUi.Success -> ModuleList(list = data.data, onClick = onClick)
             }
-        }
+        //}
     }
 }
 
 @Composable
 fun ModuleList(modifier: Modifier = Modifier, list: List<ModuleUi>, onClick: (String, String) -> Unit) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 16.dp),
+        modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(list) { item ->
@@ -92,6 +105,7 @@ fun ModuleList(modifier: Modifier = Modifier, list: List<ModuleUi>, onClick: (St
 }
 
 @Composable
+
 fun ModuleItem(item: ModuleUi, onClick: (String, String) -> Unit, modifier: Modifier = Modifier) {
 
     Box(modifier = modifier) {
@@ -165,7 +179,8 @@ fun ModuleItem(item: ModuleUi, onClick: (String, String) -> Unit, modifier: Modi
                         onTap = {
                             isPressed = !isPressed
 
-                            onClick(item.idLanguage, item.id)
+                            if (item.isEnableModule)
+                                onClick(item.idLanguage, item.id)
                         }
 
                     )
@@ -197,17 +212,88 @@ fun ModuleItem(item: ModuleUi, onClick: (String, String) -> Unit, modifier: Modi
                 )
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        item.name, fontSize = 24.sp, fontWeight = FontWeight.Bold
-                    )
+
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            item.name, fontSize = 24.sp, fontWeight = FontWeight.Bold, fontFamily = Sf_compact,
+                        )
+
+                        if (!item.isEnableModule)
+                            Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = Color.Gray, modifier = Modifier.padding(start = 4.dp))
+                    }
+
+
+
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
                         item.description,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
+                        fontFamily = Sf_compact,
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                     )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    if (!item.isEnableModule) {
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+
+
+                            Text(
+                                "Еще ${item.starsToUnlock}",
+                                fontFamily = Sf_compact,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+
+                            Image(
+                                painter = painterResource(R.drawable.img_star),
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                "для разблокировки",
+                                fontFamily = Sf_compact,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                            )
+                        }
+                    } else {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            BurningFuseTimerWithStarZones(
+                                item, modifier = Modifier
+                                    .weight(1f)
+                            )
+
+                            Spacer(modifier = Modifier.width(12.dp))
+
+                            Text(
+                                text = "${item.usersStars}/${item.maxStars}", fontFamily = Sf_compact,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 14.sp
+                            )
+
+                            Spacer(modifier = Modifier.width(4.dp))
+
+                            Image(
+                                painter = painterResource(R.drawable.img_star),
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    }
                 }
 
 
@@ -215,5 +301,47 @@ fun ModuleItem(item: ModuleUi, onClick: (String, String) -> Unit, modifier: Modi
         }
 
     }
+
+
+}
+
+@Composable
+fun BurningFuseTimerWithStarZones(
+    item: ModuleUi,
+    modifier: Modifier
+
+) {
+    val progress = item.usersStars.toFloat() / item.maxStars
+
+    println("pregress = " + progress)
+
+
+    // Градиент фитиля
+    val flameBrush = Brush.horizontalGradient(
+        colors = listOf(
+            //Color(0xFFEF5350).copy(alpha = 0.8f + 0.2f),
+            Color(0xFF4CAF50).copy(alpha = 0.5f + 0.3f),
+            Color(0xFF4CAF50).copy(alpha = 0.5f + 0.3f)
+        )
+    )
+
+
+
+    Box(
+        modifier = modifier
+            .height(12.dp)
+            .background(Color.Gray.copy(alpha = 0.3f), shape = RoundedCornerShape(6.dp))
+            .onGloballyPositioned { coords ->
+                //barWidth.floatValue = coords.size.width.toFloat()
+            }) {
+        // Прогресс
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(progress)
+                .background(flameBrush, shape = RoundedCornerShape(12.dp))
+        )
+    }
+
 
 }

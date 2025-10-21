@@ -12,7 +12,9 @@ data class GameState(
     val countInCorrectWords: Int = 0,
 
     val gameResult: GameResult = GameResult.None,
-    val timer: TimerState = TimerState()
+    val timer: TimerState = TimerState(),
+
+    val isShowExitDialog: Boolean = false
 )
 
 data class TimerState(

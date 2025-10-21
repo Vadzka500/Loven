@@ -6,7 +6,6 @@ import com.sidspace.core.domain.model.DomainResult
 import com.sidspace.loven.core.presentation.model.ResultUi
 import com.sidspace.loven.modules.domain.repository.ModuleRepository
 import com.sidspace.loven.modules.presentation.mapper.toModuleUi
-import com.sidspace.loven.modules.presentation.model.ModuleUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

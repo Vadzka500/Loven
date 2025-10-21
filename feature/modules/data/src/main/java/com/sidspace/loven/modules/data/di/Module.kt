@@ -1,6 +1,7 @@
 package com.sidspace.loven.modules.data.di
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.sidspace.core.data.model.UserManager
 import com.sidspace.loven.modules.data.repository.ModuleRepositoryImpl
 import com.sidspace.loven.modules.domain.repository.ModuleRepository
 import dagger.Module
@@ -14,5 +15,6 @@ object Module {
 
 
     @Provides
-    fun provideModuleRepository(firestore: FirebaseFirestore): ModuleRepository = ModuleRepositoryImpl(firestore)
+    fun provideModuleRepository(firestore: FirebaseFirestore, userManager: UserManager): ModuleRepository =
+        ModuleRepositoryImpl(firestore, userManager)
 }

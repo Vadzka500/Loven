@@ -60,6 +60,25 @@ class GameViewModel @Inject constructor(
             GameIntent.ToLessons -> {
                 toLessons()
             }
+
+            GameIntent.Exit -> {
+                _state.update { it.copy(isShowExitDialog = false) }
+                exitFromGame()
+            }
+
+            GameIntent.ShowExitDialog -> {
+                _state.update { it.copy(isShowExitDialog = true) }
+            }
+
+            GameIntent.HideExitDialog -> {
+                _state.update { it.copy(isShowExitDialog = false) }
+            }
+        }
+    }
+
+    private fun exitFromGame() {
+        viewModelScope.launch {
+            _effect.emit(GameEffect.Exit)
         }
     }
 
@@ -114,13 +133,14 @@ class GameViewModel @Inject constructor(
                     println("is end = " + isEnd)
 
                     if (isEnd) {
-                        when (saveLessonUseCase(idLanguage, idModule, idLesson, getStars())) {
+                        val starsCount = getStars()
+                        when (saveLessonUseCase(idLanguage, idModule, idLesson, starsCount)) {
                             DomainResult.Error -> Unit
                             is DomainResult.Success -> {
                                 _state.update {
                                     it.copy(
                                         gameResult = GameResult.SuccessGame(
-                                            getStars(),
+                                            starsCount,
                                             _state.value.countInCorrectWords
                                         )
                                     )

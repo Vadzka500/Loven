@@ -9,6 +9,7 @@ import com.sidspace.loven.lessons.data.mapper.toLessonsDomain
 import com.sidspace.loven.lessons.data.mapper.toUserLessons
 import com.sidspace.loven.lessons.data.model.UserLesson
 import com.sidspace.loven.lessons.data.model.UserLessonFirebase
+import com.sidspace.loven.lessons.data.model.UserModule
 import com.sidspace.loven.lessons.domain.model.LessonDomain
 import com.sidspace.loven.lessons.domain.repository.LessonsRepository
 import kotlinx.coroutines.flow.Flow
@@ -98,6 +99,17 @@ class LessonsRepositoryImpl @Inject constructor(
             firestore.collection(FirestoreCollections.USERS).document(userManager.user!!.id).get().await()
 
         if (!userSnapshot.exists()) return null
+
+
+        val moduleShapshot = userSnapshot.reference.collection(FirestoreCollections.LANGUAGE).document(idLanguage)
+            .collection(FirestoreCollections.MODULES).document(idModule).get().await()
+
+        if (!moduleShapshot.exists()) {
+            userSnapshot.reference.collection(FirestoreCollections.LANGUAGE).document(idLanguage)
+                .collection(FirestoreCollections.MODULES).document(idModule)
+                .set(UserModule())
+                .await()
+        }
 
         val ref =
             userSnapshot.reference.collection(FirestoreCollections.LANGUAGE).document(idLanguage)
