@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.sidspace.loven.modules.presentation.screen.ModuleEffect
 import com.sidspace.loven.modules.presentation.screen.ModuleScreen
 
 fun NavGraphBuilder.moduleNavGraph(

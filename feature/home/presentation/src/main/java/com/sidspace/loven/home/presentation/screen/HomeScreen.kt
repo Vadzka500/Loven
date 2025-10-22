@@ -484,8 +484,6 @@ fun OptimizedCardItem(card: OptimizedCard, time: Float) {
 }
 
 class OptimizedCard(val textCard: String) {
-    val text: String = textCard
-    val size = Random.nextInt(50, 80)
     val startX = Random.nextInt(-20, 380).toFloat()
     val startY = Random.nextFloat() * -0.5f
     val fallSpeed = Random.nextFloat() * 0.3f + 0.1f
@@ -493,13 +491,4 @@ class OptimizedCard(val textCard: String) {
     val swingSpeed = Random.nextFloat() * 2f + 1f
     val swingAmount = Random.nextFloat() * 10f
     val alpha = Random.nextFloat() * 0.3f + 0.4f
-
-    val symbol = listOf("A", "B", "C", "W", "P", "G").random()
-
-    val color: Color = when (Random.nextInt(4)) {
-        0 -> Color(0xFFFF5252) // Красный
-        1 -> Color(0xFF448AFF) // Синий
-        2 -> Color(0xFF69F0AE) // Зеленый
-        else -> Color(0xFFFFAB40) // Оранжевый
-    }.copy(alpha = alpha)
 }

@@ -24,6 +24,19 @@ class ModuleViewModel @Inject constructor(private val repository: ModuleReposito
     private val _effect = MutableSharedFlow<ModuleEffect>()
     val effect = _effect.asSharedFlow()
 
+
+    fun onIntent(intent: ModuleIntent){
+        when(intent){
+            is ModuleIntent.ToLessonsScreen -> toLessonsScreen(intent.idLanguage, intent.idModule)
+        }
+    }
+
+    fun toLessonsScreen(idLanguage: String, idModule: String){
+        viewModelScope.launch {
+            _effect.emit(ModuleEffect.ToLessonsScreen(idLanguage, idModule))
+        }
+    }
+
     fun getModules(idLanguage: String) {
         viewModelScope.launch {
             when (val data = repository.getModulesByLanguage(idLanguage)) {

@@ -65,6 +65,7 @@ import com.sidspace.loven.core.presentation.R
 import com.sidspace.loven.core.presentation.model.ResultUi
 import com.sidspace.loven.core.presentation.uikit.Sf_compact
 import com.sidspace.loven.modules.presentation.model.ModuleUi
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ModuleScreen(
@@ -77,9 +78,17 @@ fun ModuleScreen(
 
     LaunchedEffect(Unit) {
         moduleViewModel.getModules(idLanguage)
+
+        moduleViewModel.effect.collectLatest { effect ->
+            when (effect) {
+                is ModuleEffect.ToLessonsScreen -> onClick(effect.idLanguage, effect.idModule)
+            }
+        }
     }
 
-    ModuleContent(modifier = modifier, state = state, onClick = onClick)
+    ModuleContent(modifier = modifier, state = state, onClick = { idLanguage, idModule ->
+        moduleViewModel.onIntent(ModuleIntent.ToLessonsScreen(idLanguage, idModule))
+    })
 
 }
 
@@ -331,8 +340,10 @@ fun ModuleItem(
                     }
                 }
 
-                if(item.isCompleted) {
-                    Box(modifier = Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.TopEnd) {
+                if (item.isCompleted) {
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp), contentAlignment = Alignment.TopEnd) {
                         Image(
                             painter = painterResource(com.sidspace.loven.modules.presentation.R.drawable.img_completed),
                             contentDescription = null,

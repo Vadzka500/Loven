@@ -29,6 +29,18 @@ class LanguageViewModel @Inject constructor(private val getLanguagesUseCase: Get
         getLanguages()
     }
 
+    fun onIntent(intent: LanguageIntent) {
+        when (intent) {
+            is LanguageIntent.SelectLanguage -> toModulesScreen(intent.idLanguage)
+        }
+    }
+
+    private fun toModulesScreen(idLanguage: String) {
+        viewModelScope.launch {
+            _effect.emit(LanguageEffect.ToModulesScreen(idLanguage))
+        }
+    }
+
 
     fun getLanguages() {
         viewModelScope.launch {

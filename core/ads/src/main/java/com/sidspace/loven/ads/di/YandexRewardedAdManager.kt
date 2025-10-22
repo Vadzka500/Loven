@@ -1,21 +1,10 @@
 package com.sidspace.loven.ads.di
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import com.sidspace.core.data.model.UserManager
-import com.yandex.mobile.ads.common.AdError
-import com.yandex.mobile.ads.common.AdRequest
 import com.yandex.mobile.ads.common.AdRequestConfiguration
 import com.yandex.mobile.ads.common.AdRequestError
 import com.yandex.mobile.ads.common.ImpressionData
@@ -24,7 +13,6 @@ import com.yandex.mobile.ads.rewarded.RewardedAd
 import com.yandex.mobile.ads.rewarded.RewardedAdEventListener
 import com.yandex.mobile.ads.rewarded.RewardedAdLoadListener
 import com.yandex.mobile.ads.rewarded.RewardedAdLoader
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Singleton
 

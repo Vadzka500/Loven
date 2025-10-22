@@ -61,7 +61,7 @@ fun AppNavHost(
             }
         })
 
-        authNavGraph(paddingValues = innerPaddingValues, toHomeScreen = {
+        authNavGraph(toHomeScreen = {
             navController.navigate(Home) {
                 popUpTo(navController.graph.startDestinationId) { inclusive = true }
                 launchSingleTop = true

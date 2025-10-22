@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,6 +46,7 @@ import coil.compose.AsyncImage
 import com.sidspace.loven.core.presentation.model.ResultUi
 import com.sidspace.loven.core.presentation.uikit.Sf_compact
 import com.sidspace.loven.languages.presentation.model.LanguageUi
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LanguageScreen(
@@ -55,7 +57,19 @@ fun LanguageScreen(
 
     val state = languageViewModel.state.collectAsState()
 
-    LanguagesContent(modifier = modifier, state = state, onClick = onClick)
+    LaunchedEffect(Unit) {
+        languageViewModel.effect.collectLatest { effect ->
+            when(effect){
+                is LanguageEffect.ToModulesScreen -> {
+                    onClick(effect.idLanguage)
+                }
+            }
+        }
+    }
+
+    LanguagesContent(modifier = modifier, state = state, onClick = {
+        languageViewModel.onIntent(LanguageIntent.SelectLanguage(it))
+    })
 
 }
 
@@ -169,9 +183,7 @@ fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (Stri
                 }
         ) {
             Box(
-                modifier = Modifier
-                //.padding(horizontal = 48.dp, vertical = 24.dp)
-                ,
+                modifier = Modifier,
                 contentAlignment = Alignment.Center
             ) {
 
@@ -185,12 +197,7 @@ fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (Stri
                         .width(200.dp)
                         .offset(y = 30.dp, x = -155.dp)
                         .rotate(55f)
-                    /* .blur(
-                         radiusX = 1.dp, radiusY = 1.dp, edgeTreatment = BlurredEdgeTreatment(
-                             RoundedCornerShape(2.dp)
 
-                         )
-                     )*///.clip(CircleShape)
                 )
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {

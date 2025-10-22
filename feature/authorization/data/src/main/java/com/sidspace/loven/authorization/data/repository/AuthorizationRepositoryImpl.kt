@@ -12,6 +12,7 @@ import com.sidspace.core.domain.model.DomainResult
 
 import com.sidspace.loven.authorization.domain.model.AuthDomainResult
 import com.sidspace.loven.authorization.domain.repository.AuthorizationRepository
+import com.sidspace.loven.utils.GameConstants
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -55,7 +56,7 @@ class AuthorizationRepositoryImpl @Inject constructor(
                     "name" to firebaseAuth.currentUser!!.displayName,
                     "email" to firebaseAuth.currentUser!!.email,
                     "photoUrl" to firebaseAuth.currentUser!!.photoUrl,
-                    "lifeCount" to 10,
+                    "lifeCount" to GameConstants.LIVES_MAX_COUNT,
                     "lastLifeTimestamp" to FieldValue.serverTimestamp()
                 )
 

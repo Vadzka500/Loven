@@ -14,5 +14,6 @@ import dagger.hilt.components.SingletonComponent
 object GameModule {
 
     @Provides
-    fun provideRepository(firestore: FirebaseFirestore, userManager: UserManager): GameRepository = GameRepositoryImpl(firestore, userManager)
+    fun provideRepository(firestore: FirebaseFirestore, userManager: UserManager): GameRepository =
+        GameRepositoryImpl(firestore, userManager)
 }

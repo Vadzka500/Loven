@@ -199,85 +199,42 @@ fun NoLivesDialog(onClick: () -> Unit, showAds:() -> Unit, modifier: Modifier = 
 
 
 }
-
 @Composable
-fun LessonsList(list: List<LessonUi>, modifier: Modifier = Modifier, onSelectLesson: (String, String, String) -> Unit) {
+fun LessonsList(
+    list: List<LessonUi>,
+    modifier: Modifier = Modifier,
+    onSelectLesson: (String, String, String) -> Unit
+) {
+    // Таблица весов для каждого mod (0..7)
+    val weights = listOf(
+        1f to 1f,   // центр
+        1f to 3f,   // левее
+        0f to 2f,   // слева
+        1f to 3f,   // левее
+        1f to 1f,   // центр
+        3f to 1f,   // правее
+        2f to 0f,   // справа
+        3f to 1f    // правее
+    )
+
     LazyColumn(
         modifier = modifier.padding(horizontal = 32.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
-        itemsIndexed(list, key = { index, item -> item.id }) { index, title ->
-            val mod = index % 8
+        itemsIndexed(list, key = { _, item -> item.id }) { index, lesson ->
+            val (startWeight, endWeight) = weights[index % weights.size]
 
             Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                when (mod) {
-                    0 -> { // центр
-                        Spacer(Modifier.weight(1f))
-                        LessonItem(
-                            title, index = index, isLast = list.size - 1 == index, onSelectLesson = onSelectLesson
-                        )
-                        Spacer(Modifier.weight(1f))
-                    }
-
-                    1 -> { // левее
-                        Spacer(Modifier.weight(1f))
-                        LessonItem(
-                            title, index = index, isLast = list.size - 1 == index, onSelectLesson = onSelectLesson
-                        )
-                        Spacer(Modifier.weight(3f))
-
-                    }
-
-                    2 -> { // слева
-                        LessonItem(
-                            title, index = index, isLast = list.size - 1 == index, onSelectLesson = onSelectLesson
-                        )
-                        Spacer(Modifier.weight(2f))
-                    }
-
-                    3 -> { // левее
-                        Spacer(Modifier.weight(1f))
-                        LessonItem(
-                            title, index = index, isLast = list.size - 1 == index, onSelectLesson = onSelectLesson
-                        )
-                        Spacer(Modifier.weight(3f))
-
-                    }
-
-                    4 -> { // центр
-                        Spacer(Modifier.weight(1f))
-                        LessonItem(
-                            title, index = index, isLast = list.size - 1 == index, onSelectLesson = onSelectLesson
-                        )
-                        Spacer(Modifier.weight(1f))
-                    }
-
-                    5 -> { // правее
-                        Spacer(Modifier.weight(3f))
-                        LessonItem(
-                            title, index = index, isLast = list.size - 1 == index, onSelectLesson = onSelectLesson
-                        )
-                        Spacer(Modifier.weight(1f))
-                    }
-
-                    6 -> { // справа
-                        Spacer(Modifier.weight(2f))
-                        LessonItem(
-                            title, index = index, isLast = list.size - 1 == index, onSelectLesson = onSelectLesson
-                        )
-                    }
-
-                    7 -> { // правее
-                        Spacer(Modifier.weight(3f))
-                        LessonItem(
-                            title, index = index, isLast = list.size - 1 == index, onSelectLesson = onSelectLesson
-                        )
-                        Spacer(Modifier.weight(1f))
-                    }
-                }
+                if (startWeight > 0f) Spacer(Modifier.weight(startWeight))
+                LessonItem(
+                    lesson,
+                    onSelectLesson = onSelectLesson
+                )
+                if (endWeight > 0f) Spacer(Modifier.weight(endWeight))
             }
         }
     }
@@ -286,8 +243,6 @@ fun LessonsList(list: List<LessonUi>, modifier: Modifier = Modifier, onSelectLes
 @Composable
 fun LessonItem(
     item: LessonUi,
-    index: Int,
-    isLast: Boolean,
     onSelectLesson: (String, String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {

@@ -47,6 +47,7 @@ dependencies {
     implementation(projects.feature.authorization.domain)
     implementation(projects.core.di)
     implementation(projects.core.domain)
+    implementation(projects.core.utils)
     implementation(projects.core.data)
 
     implementation(libs.hilt.android)

@@ -1,4 +1,5 @@
 package com.sidspace.loven.modules.presentation.screen
 
-interface ModuleIntent {
+sealed interface ModuleIntent {
+    data class ToLessonsScreen(val idLanguage: String, val idModule: String) : ModuleIntent
 }

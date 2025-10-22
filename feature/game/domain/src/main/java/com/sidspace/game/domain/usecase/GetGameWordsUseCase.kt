@@ -7,6 +7,7 @@ import com.sidspace.game.domain.model.GameStateDomain
 import com.sidspace.game.domain.model.GameWords
 import com.sidspace.game.domain.model.Word
 import com.sidspace.game.domain.repository.GameRepository
+import com.sidspace.loven.utils.GameConstants
 import com.sidspace.loven.utils.isEnglishOnly
 import javax.inject.Inject
 
@@ -64,7 +65,7 @@ class Game(
     private val gameMode: GameModeDomain
 ) {
 
-    private var initialPoolSize = 5
+    private var initialPoolSize = GameConstants.INITIAL_WORDS_SIZE
 
     private var errorCount = 0
 
@@ -154,7 +155,7 @@ class Game(
     }
 
     fun getUpdatedList(list: List<Pair<String, String>>): GameWords {
-        //if (iterator >= startList.size) return currentList
+
         if (iterator >= startList.size) {
 
             val listRu = currentList.listRuWords.toMutableList()
@@ -170,13 +171,10 @@ class Game(
                 listTranslateWords = listTranslate
             )
 
-            println("last list = " + currentList)
-
             return currentList
 
         }
 
-        println("list2 = " + list.size)
         if (list.size > 1) {
 
             val l = List(list.size) {
@@ -198,51 +196,27 @@ class Game(
                 }
             }
 
-            //listRu.shuffled()
-            //listTranslate.shuffled()
-            println("list1 = " + currentList)
+
             listRu.reversed().forEachIndexed { index, word ->
                 val newRuWords = currentList.listRuWords.toMutableList()
                 val newTranslateWords = currentList.listTranslateWords.toMutableList()
 
-                /*if (gameMode == GameModeDomain.SWAP) {
-                    if (isEnglishOnly(list[index].first)) {
-                        newRuWords[newRuWords.indexOf(list[index].first)] = word
-                        newTranslateWords[newTranslateWords.indexOf(list[index].second)] =
-                            listTranslate.reversed()[index]
-                        println("word 1 = " + word)
-                        println("word 2 = " + listTranslate.reversed()[index])
-                        println("list ru 1= " + newRuWords.toString())
-                        println("list tr 1= " + newTranslateWords.toString())
-                    } else {
-                        newRuWords[newRuWords.indexOf(list[index].first)] = listTranslate.reversed()[index]
-                        newTranslateWords[newTranslateWords.indexOf(list[index].second)] = word
 
-                        println("word 3 = " + word)
-                        println("word 4 = " + listTranslate.reversed()[index])
-
-                        println("list ru 2= " + newRuWords.toString())
-                        println("list tr 2= " + newTranslateWords.toString())
-                    }
-                } else {*/
                 newRuWords[newRuWords.indexOf(list[index].first)] = word
                 newTranslateWords[newTranslateWords.indexOf(list[index].second)] = listTranslate[index]
-                //}
+
 
                 currentList = currentList.copy(
                     listRuWords = newRuWords,
                     listTranslateWords = newTranslateWords
                 )
             }
-            println("list0 = " + currentList)
-            return currentList
 
+            return currentList
 
         } else {
             val newWord = getNextWord()
-            println("ru = " + currentList.listRuWords)
-            println("en = " + currentList.listTranslateWords)
-            println("word = " + list[0].first)
+
             newWord?.let {
 
                 val newRuWords = currentList.listRuWords.toMutableList()

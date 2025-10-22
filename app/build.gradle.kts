@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
-    alias(libs.plugins.detekt)
+
     alias(libs.plugins.crashlytics)
 
 }
@@ -47,9 +47,7 @@ android {
 
 }
 
-detekt {
-    ignoreFailures = true
-}
+
 
 dependencies {
 

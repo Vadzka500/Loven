@@ -41,7 +41,6 @@ import com.sidspace.loven.utils.GameConstants
 fun HealthDialog(
     livesCount: Long,
     time: Long?,
-    toLessons: () -> Unit = {},
     onDismiss: () -> Unit,
     onShowAds:() -> Unit,
     modifier: Modifier = Modifier
@@ -160,7 +159,6 @@ fun HealthDialog(
         }
     }
 
-    // Основной экран
     LaunchedEffect(Unit) {
         isSheetOpen = true
     }

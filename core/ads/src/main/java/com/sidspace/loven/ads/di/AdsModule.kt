@@ -15,7 +15,7 @@ object AdsModule {
 
     @Provides
     @Singleton
-    fun provideYandexAdsManager(app: Application, adManager: YandexRewardedAdManager): YandexAdsManager {
+    fun provideYandexAdsManager(app: Application): YandexAdsManager {
         return YandexAdsManager(app)
     }
 

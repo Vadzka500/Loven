@@ -9,7 +9,6 @@ import androidx.navigation.compose.composable
 import com.sidspace.loven.authorization.presentation.screen.AuthorizationScreen
 
 fun NavGraphBuilder.authNavGraph(
-    paddingValues: PaddingValues,
     toHomeScreen: () -> Unit
 ) {
 
