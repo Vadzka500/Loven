@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.crashlytics)
 
 }
@@ -42,6 +43,12 @@ android {
     buildFeatures {
         compose = true
     }
+
+
+}
+
+detekt {
+    ignoreFailures = true
 }
 
 dependencies {
