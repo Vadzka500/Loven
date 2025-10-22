@@ -3,10 +3,11 @@ package com.sidspace.loven.modules.data.repository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.sidspace.core.data.model.UserManager
+import com.sidspace.core.data.model.UserModule
 import com.sidspace.core.data.utils.FirestoreCollections
 import com.sidspace.core.domain.model.DomainResult
-import com.sidspace.loven.modules.data.UserModule
 import com.sidspace.loven.modules.data.mapper.toDomain
+import com.sidspace.loven.modules.data.mapper.toUserModule
 import com.sidspace.loven.modules.domain.model.ModuleDomain
 import com.sidspace.loven.modules.domain.repository.ModuleRepository
 import kotlinx.coroutines.tasks.await
@@ -44,7 +45,7 @@ class ModuleRepositoryImpl @Inject constructor(
         return DomainResult.Success(
             modules.toDomain(
                 id,
-                usersModules.documents.associate { it.id to it.get("starsCount") as Long }
+                usersModules.documents.associate { it.id to it.toUserModule() }
             )
         )
 

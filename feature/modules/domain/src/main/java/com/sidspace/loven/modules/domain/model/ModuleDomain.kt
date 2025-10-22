@@ -11,5 +11,6 @@ data class ModuleDomain(
     val usersStars: Long,
     val maxStars: Long,
     val isEnableModule: Boolean,
-    val starsToUnlock: Long
+    val starsToUnlock: Long,
+    val isCompleted: Boolean
 )

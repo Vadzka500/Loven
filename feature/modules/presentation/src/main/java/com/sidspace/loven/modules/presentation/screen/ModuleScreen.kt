@@ -6,6 +6,9 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -51,6 +54,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -77,16 +83,23 @@ fun ModuleScreen(
 
 }
 
+
 @Composable
 fun ModuleContent(state: State<ModuleState>, onClick: (String, String) -> Unit, modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
-        //AnimatedContent(targetState = state.value.listModules) { result ->
-            when (val data = state.value.listModules) {
+        AnimatedContent(modifier = Modifier.fillMaxSize(), targetState = state.value.listModules, transitionSpec = {
+            if (initialState is ResultUi.Success && targetState is ResultUi.Success) {
+                fadeIn(animationSpec = tween(delayMillis = 0)).togetherWith(fadeOut(animationSpec = tween(delayMillis = 0)))
+            } else {
+                fadeIn().togetherWith(fadeOut())
+            }
+        }) { result ->
+            when (result) {
                 ResultUi.Error -> Unit
                 ResultUi.Loading -> Unit
-                is ResultUi.Success -> ModuleList(list = data.data, onClick = onClick)
+                is ResultUi.Success -> ModuleList(list = result.data, onClick = onClick)
             }
-        //}
+        }
     }
 }
 
@@ -96,7 +109,7 @@ fun ModuleList(modifier: Modifier = Modifier, list: List<ModuleUi>, onClick: (St
         modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(list) { item ->
+        items(list, key = { it.id }) { item ->
             ModuleItem(item, onClick, modifier = Modifier.fillMaxWidth())
         }
     }
@@ -104,9 +117,26 @@ fun ModuleList(modifier: Modifier = Modifier, list: List<ModuleUi>, onClick: (St
 
 }
 
-@Composable
+class ModuleUiProvider : PreviewParameterProvider<ModuleUi> {
+    override val values = sequenceOf(
+        ModuleUi("1", "Module 1", "Описание 1", "", "", 10, 12, 12, 12, true, 0),
+        ModuleUi("1", "Module 1", "Описание 1", "", "", 10, 12, 12, 12, true, 0, false),
+    )
+}
 
-fun ModuleItem(item: ModuleUi, onClick: (String, String) -> Unit, modifier: Modifier = Modifier) {
+@Composable
+@Preview
+fun ModuleItemPreview(@PreviewParameter(ModuleUiProvider::class) item: ModuleUi) {
+    ModuleItem(item = item, onClick = { _, _ -> })
+}
+
+@Composable
+@Preview
+fun ModuleItem(
+    @PreviewParameter(ModuleUiProvider::class) item: ModuleUi,
+    onClick: (String, String) -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Box(modifier = modifier) {
 
@@ -220,7 +250,12 @@ fun ModuleItem(item: ModuleUi, onClick: (String, String) -> Unit, modifier: Modi
                         )
 
                         if (!item.isEnableModule)
-                            Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = Color.Gray, modifier = Modifier.padding(start = 4.dp))
+                            Icon(
+                                imageVector = Icons.Default.Lock,
+                                contentDescription = null,
+                                tint = Color.Gray,
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
                     }
 
 
@@ -296,6 +331,15 @@ fun ModuleItem(item: ModuleUi, onClick: (String, String) -> Unit, modifier: Modi
                     }
                 }
 
+                if(item.isCompleted) {
+                    Box(modifier = Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.TopEnd) {
+                        Image(
+                            painter = painterResource(com.sidspace.loven.modules.presentation.R.drawable.img_completed),
+                            contentDescription = null,
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+                }
 
             }
         }

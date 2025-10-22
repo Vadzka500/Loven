@@ -1,6 +1,8 @@
 package com.sidspace.loven.game.data.repository
 
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.sidspace.core.data.model.UserManager
 import com.sidspace.core.data.utils.FirestoreCollections
 import com.sidspace.core.domain.model.DomainResult
@@ -35,37 +37,67 @@ class GameRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveLesson(
-        languageId: String, moduleId: String, lessonId: String, starCount: Int
+        languageId: String, moduleId: String, lessonId: String, starCount: Int, isLastLesson: Boolean
     ): DomainResult<Unit> {
-        val userSnapshot =
-            firestore.collection(FirestoreCollections.USERS).document(userManager.user!!.id).get().await()
+
+        val userSnapshot = getUser()
 
         if (!userSnapshot.exists()) return DomainResult.Error
 
-        val lessonsCollection = userSnapshot.reference.collection(FirestoreCollections.LANGUAGE).document(languageId)
-            .collection(FirestoreCollections.MODULES).document(moduleId).collection(FirestoreCollections.LESSON)
+        if (!isLastLesson) {
+            val querySnapshot = getLesson(userSnapshot, languageId, moduleId, lessonId)
 
+            val starDiff = starCount - (querySnapshot.documents.first().get("starCount") as Long)
 
-        val querySnapshot = lessonsCollection.whereEqualTo("idLesson", lessonId).get().await()
-
-        val starDiff = starCount - (querySnapshot.documents.first().get("starCount") as Long)
-
-        if (starDiff > 0) {
-            querySnapshot.documents.first().reference.update("starCount", starCount).await()
+            if (starDiff > 0) {
+                querySnapshot.documents.first().reference.update("starCount", starCount).await()
+                updateModule(userSnapshot, languageId, moduleId, starDiff)
+            }
+        } else {
+            setCompleteModule(userSnapshot, languageId, moduleId)
         }
 
+        return DomainResult.Success(Unit)
+    }
+
+    suspend fun getUser(): DocumentSnapshot {
+        return firestore.collection(FirestoreCollections.USERS).document(userManager.user!!.id).get().await()
+    }
+
+    suspend fun setCompleteModule(
+        userSnapshot: DocumentSnapshot,
+        languageId: String,
+        moduleId: String
+    ) {
+        userSnapshot.reference.collection(FirestoreCollections.LANGUAGE).document(languageId)
+            .collection(FirestoreCollections.MODULES).document(moduleId).update("isCompleted", true).await()
+    }
+
+    suspend fun updateModule(
+        userSnapshot: DocumentSnapshot,
+        languageId: String,
+        moduleId: String,
+        starDiff: Long
+    ) {
         val module = userSnapshot.reference.collection(FirestoreCollections.LANGUAGE).document(languageId)
             .collection(FirestoreCollections.MODULES).document(moduleId).get().await()
 
-        val data = hashMapOf(
-            "starsCount" to (module.get("starsCount") as Long + starDiff)
-        )
+        val data = (module.get("starsCount") as Long + starDiff)
 
         userSnapshot.reference.collection(FirestoreCollections.LANGUAGE).document(languageId)
-            .collection(FirestoreCollections.MODULES).document(moduleId).set(data).await()
+            .collection(FirestoreCollections.MODULES).document(moduleId).update("starsCount", data).await()
+    }
 
+    suspend fun getLesson(
+        userSnapshot: DocumentSnapshot,
+        languageId: String,
+        moduleId: String,
+        lessonId: String,
+    ): QuerySnapshot {
+        val lessonsCollection = userSnapshot.reference.collection(FirestoreCollections.LANGUAGE).document(languageId)
+            .collection(FirestoreCollections.MODULES).document(moduleId).collection(FirestoreCollections.LESSON)
 
-        return DomainResult.Success(Unit)
+        return lessonsCollection.whereEqualTo("idLesson", lessonId).get().await()
     }
 
     override suspend fun inCorrectWords(): GameLifeDomain {

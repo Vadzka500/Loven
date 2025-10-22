@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -209,6 +210,16 @@ fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (Stri
                     }
                 }
 
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .then(
+                            if (item.isEnable)
+                                Modifier.background(Color.White.copy(alpha = 0f))
+                            else
+                                Modifier.background(Color.White.copy(alpha = 0.5f))
+                        )
+                ) { }
 
             }
         }

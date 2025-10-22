@@ -2,6 +2,7 @@ package com.sidspace.loven.lessons.data.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sidspace.core.data.model.UserManager
+import com.sidspace.core.data.model.UserModule
 import com.sidspace.core.data.utils.FirestoreCollections
 import com.sidspace.core.domain.model.DomainResult
 import com.sidspace.loven.lessons.data.mapper.toLessonsDomain
@@ -9,7 +10,7 @@ import com.sidspace.loven.lessons.data.mapper.toLessonsDomain
 import com.sidspace.loven.lessons.data.mapper.toUserLessons
 import com.sidspace.loven.lessons.data.model.UserLesson
 import com.sidspace.loven.lessons.data.model.UserLessonFirebase
-import com.sidspace.loven.lessons.data.model.UserModule
+
 import com.sidspace.loven.lessons.domain.model.LessonDomain
 import com.sidspace.loven.lessons.domain.repository.LessonsRepository
 import kotlinx.coroutines.flow.Flow

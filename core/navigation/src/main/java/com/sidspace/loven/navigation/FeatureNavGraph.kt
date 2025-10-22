@@ -49,6 +49,16 @@ fun AppNavHost(
 
         gameNavGraph(innerPaddingValues, onBack = {
             navController.popBackStack()
+        }, toModules = {
+            navController.navigate(ModuleRoute(it)){
+                popUpTo(navController.previousBackStackEntry?.destination?.route ?: return@navigate) {
+                    inclusive = true
+                }
+
+                navController.popBackStack()
+
+                launchSingleTop = true
+            }
         })
 
         authNavGraph(paddingValues = innerPaddingValues, toHomeScreen = {

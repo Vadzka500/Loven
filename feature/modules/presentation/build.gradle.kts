@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.icons)
 
+    implementation(libs.androidx.ui.tooling.preview)
+
     implementation(libs.kotlin.serialization)
     implementation(libs.compose.navigation)
     implementation(libs.androidx.activity.compose)

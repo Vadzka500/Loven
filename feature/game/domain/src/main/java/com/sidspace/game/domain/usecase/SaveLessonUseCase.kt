@@ -9,6 +9,7 @@ class SaveLessonUseCase @Inject constructor(private val repository: GameReposito
         idLanguage: String,
         idModule: String,
         idLesson: String,
+        isLastLesson: Boolean,
         countStars: Int
-    ): DomainResult<Unit> = repository.saveLesson(idLanguage, idModule, idLesson, countStars)
+    ): DomainResult<Unit> = repository.saveLesson(idLanguage, idModule, idLesson, countStars, isLastLesson)
 }

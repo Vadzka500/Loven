@@ -13,7 +13,8 @@ import com.sidspace.game.presentation.screen.GameViewModel
 
 fun NavGraphBuilder.gameNavGraph(
     paddingValues: PaddingValues,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    toModules: (String) -> Unit
 ) {
 
     composable<GameRoute> {
@@ -23,6 +24,7 @@ fun NavGraphBuilder.gameNavGraph(
             idModule = game.idModule,
             idLesson = game.idLessons,
             onBack = onBack,
+            toModules = toModules,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)

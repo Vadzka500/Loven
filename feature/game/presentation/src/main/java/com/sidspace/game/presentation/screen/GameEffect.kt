@@ -5,4 +5,5 @@ sealed class GameEffect {
     data class InCorrectWords(val wordRu: String, val wordTranslate: String) : GameEffect()
     data object ToLessons: GameEffect()
     object Exit: GameEffect()
+    object ToModules: GameEffect()
 }

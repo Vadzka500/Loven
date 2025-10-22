@@ -7,4 +7,5 @@ sealed interface GameIntent {
     object ShowExitDialog: GameIntent
     object HideExitDialog: GameIntent
     object Exit: GameIntent
+    object ToModules: GameIntent
 }

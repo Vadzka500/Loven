@@ -84,6 +84,7 @@ import com.sidspace.game.presentation.uikit.DefaultCardColor
 import com.sidspace.game.presentation.uikit.InCorrectBackgroundColor
 import com.sidspace.game.presentation.uikit.PressCardColor
 import com.sidspace.loven.core.presentation.R
+import com.sidspace.loven.core.presentation.model.GameModeUi
 import com.sidspace.loven.core.presentation.model.ResultUi
 import com.sidspace.loven.core.presentation.uikit.Sf_compact
 import kotlinx.coroutines.delay
@@ -104,6 +105,7 @@ fun GameScreen(
     idModule: String,
     idLesson: String,
     onBack: () -> Unit,
+    toModules: (String) -> Unit,
     gameViewModel: GameViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -132,6 +134,10 @@ fun GameScreen(
                 GameEffect.ToLessons -> {
 
                 }
+
+                GameEffect.ToModules -> {
+                    toModules(idLanguage)
+                }
             }
         }
     }
@@ -148,7 +154,10 @@ fun GameScreen(
         gameViewModel.onIntent(GameIntent.ShowExitDialog)
     }, onHideExitDialog = {
         gameViewModel.onIntent(GameIntent.HideExitDialog)
-    }, onExit = { gameViewModel.onIntent(GameIntent.Exit) }, modifier = modifier)
+    }, onExit = { gameViewModel.onIntent(GameIntent.Exit) },
+        toModules = {
+            gameViewModel.onIntent(GameIntent.ToModules)
+        }, modifier = modifier)
 
 }
 
@@ -160,6 +169,7 @@ fun GameContent(
     toLessons: () -> Unit,
     onBack: () -> Unit,
     onExit: () -> Unit,
+    toModules: () -> Unit,
     onHideExitDialog: () -> Unit,
     effect: SharedFlow<GameEffect>,
     modifier: Modifier = Modifier
@@ -203,6 +213,10 @@ fun GameContent(
             GameResult.None -> Unit
             is GameResult.SuccessGame -> {
                 EndGameScreen(data.countStar, data.countError, toLessons = onExit)
+            }
+
+            is GameResult.SuccessLastGame -> {
+                EndModuleScreen(data.countError, toModules = toModules)
             }
         }
     }
@@ -358,7 +372,7 @@ fun InitWords(
             }
         }
 
-        BurningFuseTimerWithStarZones(timer = timer)
+        BurningFuseTimerWithStarZones(timer = timer, words.type)
 
         Box(
             modifier = Modifier
@@ -508,10 +522,10 @@ fun WordColumnList(
                     }
 
 
-                    println("select3 = " + selectedCount)
+
 
                     val duration = if (selectedCount == 1) LONG_DURATION else FAST_DURATION
-                    println("select333 = " + duration)
+
 
 
 
@@ -566,7 +580,8 @@ fun WordColumnList(
 
 @Composable
 fun BurningFuseTimerWithStarZones(
-    timer: TimerState
+    timer: TimerState,
+    gamemode: GameModeUi
 ) {
 
 
@@ -623,57 +638,55 @@ fun BurningFuseTimerWithStarZones(
             )
 
             // Делители
-            timer.starThresholds.drop(1).forEach { threshold ->
-                val position = 1f - (threshold.toFloat() / timer.timeTotal)
-                Box(
-                    modifier = Modifier
-                        .height(16.dp)
-                        .width(2.dp)
-                        .align(Alignment.CenterStart)
-                        .offset {
-                            IntOffset(
-                                x = (barWidth.value * position).toInt(), y = 0
-                            )
-                        }
-                        .background(Color.White.copy(alpha = 0.9f)))
+            if(gamemode != GameModeUi.LAST_GAME) {
+                timer.starThresholds.drop(1).forEach { threshold ->
+                    val position = 1f - (threshold.toFloat() / timer.timeTotal)
+                    Box(
+                        modifier = Modifier
+                            .height(16.dp)
+                            .width(2.dp)
+                            .align(Alignment.CenterStart)
+                            .offset {
+                                IntOffset(
+                                    x = (barWidth.value * position).toInt(), y = 0
+                                )
+                            }
+                            .background(Color.White.copy(alpha = 0.9f)))
+                }
             }
         }
 
         Spacer(Modifier.height(8.dp))
 
-        Box(modifier = Modifier.fillMaxWidth()) {
-            timer.starThresholds.forEachIndexed { index, threshold ->
-                val position = 1f - (threshold.toFloat() / timer.timeTotal)
+        if(gamemode != GameModeUi.LAST_GAME) {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                timer.starThresholds.forEachIndexed { index, threshold ->
+                    val position = 1f - (threshold.toFloat() / timer.timeTotal)
 
-                Row {
-                    repeat(index + 1) {
-                        Image(
-                            painter = painterResource(R.drawable.img_star),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .then(
-                                    if (index == 0) Modifier.padding(start = 3.dp)
-                                    else Modifier
-                                )
-                                .size(16.dp)
-                                .offset {
-                                    IntOffset(
-                                        x = (((barWidth.floatValue) * position) - ((20.dp.value * (index + 1)))).toInt(),
-                                        y = 0
+                    Row {
+                        repeat(index + 1) {
+                            Image(
+                                painter = painterResource(R.drawable.img_star),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .then(
+                                        if (index == 0) Modifier.padding(start = 3.dp)
+                                        else Modifier
                                     )
-                                })
+                                    .size(16.dp)
+                                    .offset {
+                                        IntOffset(
+                                            x = (((barWidth.floatValue) * position) - ((20.dp.value * (index + 1)))).toInt(),
+                                            y = 0
+                                        )
+                                    })
+                        }
                     }
+
+
                 }
-
-
             }
         }
-
-        /*Row {
-            repeat(stars) {
-                Text("⭐", fontSize = 30.sp)
-            }
-        }*/
 
     }
 }
@@ -846,6 +859,83 @@ fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> 
                     )
                 ) {
                     Text("Вернуться к урокам")
+                }
+            }
+        }
+    }
+
+    // Основной экран
+    LaunchedEffect(Unit) {
+        isSheetOpen = true
+    }
+
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview
+fun EndModuleScreen(inCorrectCount: Int = 1, toModules: () -> Unit, modifier: Modifier = Modifier) {
+
+    val coroutineScope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false, confirmValueChange = { newValue ->
+            newValue == SheetValue.Expanded
+        })
+
+    var isSheetOpen by remember { mutableStateOf(false) }
+
+
+    if (isSheetOpen) {
+        ModalBottomSheet(
+            sheetState = sheetState, onDismissRequest = {
+
+            }, dragHandle = null
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    //.fillMaxHeight(0.5f) // можно ограничить высоту
+                    .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+
+                Text("Поздравляем!", fontFamily = Sf_compact, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+                Spacer(modifier = Modifier.height(24.dp))
+
+                        Image(
+                            painter = painterResource(com.sidspace.game.presentation.R.drawable.img_trophy),
+                            contentDescription = null,
+                            modifier = Modifier.size(80.dp)
+                        )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                val textBody = "Вы прошли модуль"
+
+
+
+                Text(
+                    textBody,
+                    fontFamily = Sf_compact,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = {
+                        coroutineScope.launch { sheetState.hide() }
+                        isSheetOpen = false
+                        toModules()
+                    }, colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    Text("Вернуться к модулям")
                 }
             }
         }

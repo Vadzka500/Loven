@@ -15,6 +15,7 @@ fun ModuleDomain.toModuleUi(): ModuleUi {
         this.usersStars,
         this.maxStars,
         this.isEnableModule,
-        this.starsToUnlock
+        this.starsToUnlock,
+        this.isCompleted
     )
 }

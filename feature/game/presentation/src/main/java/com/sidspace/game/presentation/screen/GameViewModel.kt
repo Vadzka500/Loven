@@ -9,6 +9,7 @@ import com.sidspace.game.domain.usecase.GetUpdatedListUseCase
 import com.sidspace.game.domain.usecase.IsCorrectWordUseCase
 import com.sidspace.game.domain.usecase.SaveLessonUseCase
 import com.sidspace.game.presentation.mapper.toWordUi
+import com.sidspace.loven.core.presentation.model.GameModeUi
 import com.sidspace.loven.core.presentation.model.ResultUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -73,6 +74,16 @@ class GameViewModel @Inject constructor(
             GameIntent.HideExitDialog -> {
                 _state.update { it.copy(isShowExitDialog = false) }
             }
+
+            GameIntent.ToModules -> {
+                toModules()
+            }
+        }
+    }
+
+    private fun toModules() {
+        viewModelScope.launch {
+            _effect.emit(GameEffect.ToModules)
         }
     }
 
@@ -134,31 +145,46 @@ class GameViewModel @Inject constructor(
 
                     if (isEnd) {
                         val starsCount = getStars()
-                        when (saveLessonUseCase(idLanguage, idModule, idLesson, starsCount)) {
+                        val isLastLesson = state.value.gameMode == GameModeUi.LAST_GAME
+                        when (saveLessonUseCase(
+                            idLanguage,
+                            idModule,
+                            idLesson,
+                            isLastLesson,
+                            starsCount
+
+                        )) {
                             DomainResult.Error -> Unit
                             is DomainResult.Success -> {
                                 _state.update {
-                                    it.copy(
-                                        gameResult = GameResult.SuccessGame(
-                                            starsCount,
-                                            _state.value.countInCorrectWords
+                                    if (!isLastLesson) {
+                                        it.copy(
+                                            gameResult = GameResult.SuccessGame(
+                                                starsCount,
+                                                _state.value.countInCorrectWords
+                                            )
                                         )
-                                    )
+                                    } else {
+                                        it.copy(
+                                            gameResult = GameResult.SuccessLastGame(
+                                                _state.value.countInCorrectWords
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         }
-
-
                     }
-
                     _state.update { it.copy(listWords = ResultUi.Success(data.data.toWordUi())) }
                 }
 
                 null -> Unit
             }
 
+
         }
     }
+
 
     private var isFast = false
 
@@ -244,7 +270,12 @@ class GameViewModel @Inject constructor(
             when (val data = getGameWordsUseCase(idLanguage, idModule, idLesson)) {
                 DomainResult.Error -> Unit
                 is DomainResult.Success -> {
-                    _state.update { it.copy(listWords = ResultUi.Success(data.data.toWordUi())) }
+                    _state.update {
+                        it.copy(
+                            listWords = ResultUi.Success(data.data.toWordUi()),
+                            gameMode = GameModeUi.valueOf(data.data.type.toString())
+                        )
+                    }
                     startTimer()
                 }
             }
