@@ -13,6 +13,8 @@ plugins {
     alias(libs.plugins.kapt) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.crashlytics) apply false
+    alias(libs.plugins.android.test) apply false
+    alias(libs.plugins.baselineprofile) apply false
 
 }
 

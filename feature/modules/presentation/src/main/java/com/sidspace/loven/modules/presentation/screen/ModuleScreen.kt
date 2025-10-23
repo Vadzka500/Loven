@@ -33,7 +33,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -126,6 +125,7 @@ fun ModuleList(modifier: Modifier = Modifier, list: List<ModuleUi>, onClick: (St
 
 }
 
+@Suppress("MagicNumber")
 class ModuleUiProvider : PreviewParameterProvider<ModuleUi> {
     override val values = sequenceOf(
         ModuleUi("1", "Module 1", "Описание 1", "", "", 10, 12, 12, 12, true, 0),
@@ -242,12 +242,6 @@ fun ModuleItem(
                         .width(200.dp)
                         .offset(y = 30.dp, x = -155.dp)
                         .rotate(55f)
-                    /* .blur(
-                         radiusX = 1.dp, radiusY = 1.dp, edgeTreatment = BlurredEdgeTreatment(
-                             RoundedCornerShape(2.dp)
-
-                         )
-                     )*///.clip(CircleShape)
                 )
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -255,7 +249,11 @@ fun ModuleItem(
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            item.name, fontSize = 24.sp, fontWeight = FontWeight.Bold, fontFamily = Sf_compact,
+                            item.name,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = Sf_compact,
+                            color = Color.Black
                         )
 
                         if (!item.isEnableModule)
@@ -276,7 +274,7 @@ fun ModuleItem(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
                         fontFamily = Sf_compact,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                        color = Color.Black.copy(alpha = 0.5f)
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
@@ -291,7 +289,7 @@ fun ModuleItem(
                                 fontFamily = Sf_compact,
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                                color = Color.Black.copy(alpha = 0.6f)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
 
@@ -306,7 +304,7 @@ fun ModuleItem(
                                 fontFamily = Sf_compact,
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                                color = Color.Black.copy(alpha = 0.7f)
                             )
                         }
                     } else {
@@ -325,6 +323,7 @@ fun ModuleItem(
 
                             Text(
                                 text = "${item.usersStars}/${item.maxStars}", fontFamily = Sf_compact,
+                                color = Color.Black,
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 14.sp
                             )
@@ -341,9 +340,11 @@ fun ModuleItem(
                 }
 
                 if (item.isCompleted) {
-                    Box(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp), contentAlignment = Alignment.TopEnd) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp), contentAlignment = Alignment.TopEnd
+                    ) {
                         Image(
                             painter = painterResource(com.sidspace.loven.modules.presentation.R.drawable.img_completed),
                             contentDescription = null,

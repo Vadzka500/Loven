@@ -57,6 +57,8 @@ fun LovenTopBar(
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route?.substringBefore("/")
 
+    println("current rpute = " + currentRoute)
+    println("current rpute 2 = " + Home::class.qualifiedName)
     val showTopBar = when (currentRoute) {
         null -> false
         Home::class.qualifiedName -> false

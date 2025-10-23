@@ -19,3 +19,17 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+-optimizationpasses 1
+
+
+-keepnames class com.sidspace.loven.authorization.presentation.navigation.** { *; }
+-keepnames class com.sidspace.loven.home.presentation.navigation.** { *; }
+-keepnames class com.sidspace.loven.languages.presentation.navigation.** { *; }
+-keepnames class com.sidspace.loven.modules.presentation.navigation.** { *; }
+-keepnames class com.sidspace.loven.lessons.presentation.navigation.** { *; }
+-keepnames class com.sidspace.loven.game.presentation.navigation.** { *; }
+-keep class com.sidspace.core.data.model.** { *; }
+
+-dontobfuscate

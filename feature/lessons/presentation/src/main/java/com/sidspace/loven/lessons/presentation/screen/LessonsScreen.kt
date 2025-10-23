@@ -1,11 +1,15 @@
 package com.sidspace.loven.lessons.presentation.screen
 
 import android.app.Activity
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -15,6 +19,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -59,6 +64,11 @@ import com.sidspace.loven.lessons.presentation.R
 import com.sidspace.loven.lessons.presentation.model.LessonUi
 import kotlinx.coroutines.flow.collectLatest
 
+private const val CENTER = 1f
+private const val LEFT = 2f
+private const val RIGHT = 3f
+private const val NONE = 0f
+
 @Composable
 fun LessonsScreen(
     idLanguage: String,
@@ -98,26 +108,32 @@ fun LessonsContent(
     showAds: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // AnimatedContent(targetState = state.value.list) { result ->
-    when (val result = state.value.list) {
-        ResultUi.Error -> Unit
-        ResultUi.Loading -> Unit
-        is ResultUi.Success -> {
+    AnimatedContent(modifier = Modifier.fillMaxSize(), targetState = state.value.list, transitionSpec = {
+        if (initialState is ResultUi.Success && targetState is ResultUi.Success) {
+            fadeIn(animationSpec = tween(delayMillis = 0)).togetherWith(fadeOut(animationSpec = tween(delayMillis = 0)))
+        } else {
+            fadeIn().togetherWith(fadeOut())
+        }
+    }) { result ->
+        when (val result = state.value.list) {
+            ResultUi.Error -> Unit
+            ResultUi.Loading -> Unit
+            is ResultUi.Success -> {
 
-            LessonsList(result.data, onSelectLesson = onSelectLesson, modifier = modifier)
+                LessonsList(result.data, onSelectLesson = onSelectLesson, modifier = modifier)
+            }
+        }
+
+        if (state.value.isShowNoLivesDialog) {
+            NoLivesDialog(onClick = onHideDialog, showAds = showAds)
         }
     }
-
-    if (state.value.isShowNoLivesDialog) {
-        NoLivesDialog(onClick = onHideDialog, showAds = showAds)
-    }
-    //  }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoLivesDialog(onClick: () -> Unit, showAds:() -> Unit, modifier: Modifier = Modifier) {
+fun NoLivesDialog(onClick: () -> Unit, showAds: () -> Unit, modifier: Modifier = Modifier) {
 
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = false, confirmValueChange = { newValue ->
@@ -199,22 +215,25 @@ fun NoLivesDialog(onClick: () -> Unit, showAds:() -> Unit, modifier: Modifier = 
 
 
 }
+
 @Composable
 fun LessonsList(
     list: List<LessonUi>,
     modifier: Modifier = Modifier,
     onSelectLesson: (String, String, String) -> Unit
 ) {
+
+
     // Таблица весов для каждого mod (0..7)
     val weights = listOf(
-        1f to 1f,   // центр
-        1f to 3f,   // левее
-        0f to 2f,   // слева
-        1f to 3f,   // левее
-        1f to 1f,   // центр
-        3f to 1f,   // правее
-        2f to 0f,   // справа
-        3f to 1f    // правее
+        CENTER to CENTER,
+        CENTER to RIGHT,
+        NONE to LEFT,
+        CENTER to RIGHT,
+        CENTER to CENTER,
+        RIGHT to CENTER,
+        LEFT to NONE,
+        RIGHT to CENTER
     )
 
     LazyColumn(
@@ -240,6 +259,7 @@ fun LessonsList(
     }
 }
 
+@Suppress("TooGenericExceptionCaught")
 @Composable
 fun LessonItem(
     item: LessonUi,

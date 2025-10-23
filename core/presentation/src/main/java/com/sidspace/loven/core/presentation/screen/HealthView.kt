@@ -43,7 +43,6 @@ fun HealthDialog(
     time: Long?,
     onDismiss: () -> Unit,
     onShowAds:() -> Unit,
-    modifier: Modifier = Modifier
 ) {
 
 

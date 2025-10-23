@@ -59,7 +59,7 @@ fun LanguageScreen(
 
     LaunchedEffect(Unit) {
         languageViewModel.effect.collectLatest { effect ->
-            when(effect){
+            when (effect) {
                 is LanguageEffect.ToModulesScreen -> {
                     onClick(effect.idLanguage)
                 }
@@ -100,6 +100,7 @@ fun ListLanguages(modifier: Modifier = Modifier, list: List<LanguageUi>, onClick
     }
 }
 
+@Suppress("TooGenericExceptionCaught", "MagicNumber")
 @Composable
 fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (String) -> Unit) {
 
@@ -202,7 +203,11 @@ fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (Stri
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        item.nameLanguage, fontSize = 24.sp, fontWeight = FontWeight.Bold, fontFamily = Sf_compact
+                        item.nameLanguage,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = Sf_compact,
+                        color = Color.Black
                     )
 
                     if (!item.isEnable) {

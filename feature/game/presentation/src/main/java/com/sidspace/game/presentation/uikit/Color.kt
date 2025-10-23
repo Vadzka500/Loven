@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package com.sidspace.game.presentation.uikit
 
 import androidx.compose.ui.graphics.Color

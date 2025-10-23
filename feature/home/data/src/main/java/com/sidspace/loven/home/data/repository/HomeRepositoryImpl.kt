@@ -43,6 +43,7 @@ class HomeRepositoryImpl @Inject constructor(
 
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override fun signOut(): DomainResult<Unit> {
         return try {
             userManager.clearUser()

@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kapt)
 
     alias(libs.plugins.crashlytics)
+    alias(libs.plugins.baselineprofile)
 
 }
 
@@ -24,9 +25,20 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(System.getenv("RELEASE_STORE_FILE") ?: "$rootDir/sidspacekeystore.jks")
+            storePassword = System.getenv("RELEASE_STORE_PASSWORD") ?: "8870606v"
+            keyAlias = System.getenv("RELEASE_KEY_ALIAS") ?: "Stary"
+            keyPassword = System.getenv("RELEASE_KEY_PASSWORD") ?: "8870606v"
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            signingConfig = signingConfigs["release"]
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -59,6 +71,8 @@ dependencies {
     //implementation(libs.google.firebase.auth.ktx)
     //implementation(libs.firebase.auth.common)
     implementation(libs.firebase.auth)
+    implementation(libs.androidx.profileinstaller)
+    "baselineProfile"(project(":baselineprofile"))
 
 
 

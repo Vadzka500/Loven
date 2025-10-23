@@ -264,6 +264,7 @@ fun GameButton(toGameClick: () -> Unit) {
             shadowElevation = elevation,
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(vertical = 30.dp)
                 .height(120.dp)
                 .padding(horizontal = 64.dp)
 
@@ -311,7 +312,7 @@ fun GameButton(toGameClick: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
 
-                Text("К игре", fontSize = 24.sp, fontWeight = FontWeight.Bold, fontFamily = Sf_compact)
+                Text("К игре", fontSize = 24.sp, fontWeight = FontWeight.Bold, fontFamily = Sf_compact, color = Color.Black)
             }
         }
 
@@ -400,8 +401,9 @@ fun OptimizedFallingCardsBackground(
 }
 
 @Composable
+@Suppress("MagicNumber")
 fun OptimizedCardItem(card: OptimizedCard, time: Float) {
-    // Простая математика для плавной анимации
+
     val y = card.startY + (time * card.fallSpeed) % 1.2f
     val rotation = time * card.rotationSpeed * 360f
     val swingX = sin(time * card.swingSpeed) * card.swingAmount

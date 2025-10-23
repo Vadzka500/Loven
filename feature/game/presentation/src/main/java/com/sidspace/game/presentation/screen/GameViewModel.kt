@@ -36,6 +36,13 @@ class GameViewModel @Inject constructor(
     lateinit var idModule: String
     lateinit var idLesson: String
 
+    private companion object {
+        const val MAX_STARS = 3
+        const val TWO_STARS = 2
+        const val ONE_STAR = 1
+        const val ZERO_STARS = 0
+    }
+
     fun initParams(idLanguage: String, idModule: String, idLesson: String) {
         this.idLanguage = idLanguage
         this.idModule = idModule
@@ -99,12 +106,16 @@ class GameViewModel @Inject constructor(
         }
     }
 
+
     private fun getStars(): Int {
         return when {
-            _state.value.timer.timeTotal - _state.value.timer.timeLeft < _state.value.timer.starThresholds[2] -> 3
-            _state.value.timer.timeTotal - _state.value.timer.timeLeft < _state.value.timer.starThresholds[1] -> 2
-            _state.value.timer.timeTotal - _state.value.timer.timeLeft < _state.value.timer.starThresholds[0] -> 1
-            else -> 0
+            _state.value.timer.timeTotal - _state.value.timer.timeLeft < _state.value.timer.starThresholds[2] ->
+                MAX_STARS
+            _state.value.timer.timeTotal - _state.value.timer.timeLeft < _state.value.timer.starThresholds[1] ->
+                TWO_STARS
+            _state.value.timer.timeTotal - _state.value.timer.timeLeft < _state.value.timer.starThresholds[0] ->
+                ONE_STAR
+            else -> ZERO_STARS
         }
     }
 
@@ -209,15 +220,12 @@ class GameViewModel @Inject constructor(
                 GameStateDomain.IsCorrect -> {
                     _state.update { it.copy(countCorrectWords = _state.value.countCorrectWords + 1) }
                     _state.update { it.copy(countCurrentSelected = _state.value.countCurrentSelected + 1) }
-                    println("select34 = " + _state.value.countCurrentSelected)
                     showCorrectWords(wordRu, wordTranslate)
                     list.add(wordRu to wordTranslate)
 
                     val count = _state.value.countCurrentSelected // читаем уже обновлённое
                     isFast = if (count == 1) false else true
                     var countSteps = 3
-                    println("count = " + _state.value.countCurrentSelected)
-                    println("words = " + list)
 
                     viewModelScope.launch {
 
