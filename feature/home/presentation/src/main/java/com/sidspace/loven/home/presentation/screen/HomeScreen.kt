@@ -54,13 +54,15 @@ import com.sidspace.loven.core.presentation.model.ResultUi
 import com.sidspace.loven.core.presentation.model.UserUi
 import com.sidspace.loven.core.presentation.screen.HealthDialog
 import com.sidspace.loven.core.presentation.uikit.Sf_compact
+import com.sidspace.loven.home.presentation.uikit.BorderColor
 import com.sidspace.loven.utils.GameConstants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlin.math.sin
 import kotlin.random.Random
 
-val BorderColor = Color(0x5081D4FA)
+
+
 
 
 @Composable
@@ -312,7 +314,13 @@ fun GameButton(toGameClick: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
 
-                Text("К игре", fontSize = 24.sp, fontWeight = FontWeight.Bold, fontFamily = Sf_compact, color = Color.Black)
+                Text(
+                    "К игре",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = Sf_compact,
+                    color = Color.Black
+                )
             }
         }
 
@@ -374,10 +382,10 @@ fun UserContent(user: UserUi, onShowAds: () -> Unit, modifier: Modifier = Modifi
 
 
 @Composable
+@Suppress("MagicNumber")
 fun OptimizedFallingCardsBackground(
     listWords: List<String>,
     modifier: Modifier = Modifier,
-    cardCount: Int = 15
 ) {
     val cards = remember { List(listWords.size) { OptimizedCard(listWords[it]) } }
     var time by remember { mutableStateOf(0f) }
@@ -440,51 +448,9 @@ fun OptimizedCardItem(card: OptimizedCard, time: Float) {
             )
         }
     }
-
-
-    /*val elevation by animateDpAsState(
-        targetValue = 5.dp, // при нажатии тень меньше
-        label = "elevation"
-    )
-
-    var color by remember {
-        mutableStateOf(Color.White)
-    }
-
-    Surface(
-        shape = RoundedCornerShape(12.dp),
-        color = color,
-        tonalElevation = elevation, // для Material3
-        shadowElevation = elevation, // для Material2
-        modifier = Modifier
-            .height(100.dp)
-            .width(50.dp)
-            .padding(8.dp)
-
-            .border(
-                width = 3.dp,
-                color = Color(0x80D1C4E9),
-                shape = RoundedCornerShape(12.dp)
-            )
-            .offset(
-                x = (card.startX + swingX).dp,
-                y = (y * 1200).dp
-            )
-            .graphicsLayer {
-                rotationZ = rotation
-                alpha = card.alpha
-            }
-
-    ) {
-        Box(
-            modifier = Modifier.background(Color.White),
-            contentAlignment = Alignment.Center
-        ) {
-
-        }
-    }*/
 }
 
+@Suppress("MagicNumber")
 class OptimizedCard(val textCard: String) {
     val startX = Random.nextInt(-20, 380).toFloat()
     val startY = Random.nextFloat() * -0.5f

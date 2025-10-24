@@ -3,6 +3,7 @@ package com.sidspace.game.presentation.screen
 import com.sidspace.game.presentation.model.WordsUi
 import com.sidspace.loven.core.presentation.model.GameModeUi
 import com.sidspace.loven.core.presentation.model.ResultUi
+import com.sidspace.loven.utils.GameConstants
 
 data class GameState(
     val listWords: ResultUi<WordsUi> = ResultUi.Loading,
@@ -22,7 +23,10 @@ data class TimerState(
     val timeTotal: Int = 120,
     val timeLeft: Int = 120,
     val isRunning: Boolean = false,
-    val starThresholds: List<Int> = listOf(120, 90, 50)
+    val starThresholds: List<Int> = listOf(
+        GameConstants.ONE_STAR_THRESHOLD, GameConstants.TWO_STAR_THRESHOLD,
+        GameConstants.THREE_STAR_THRESHOLD
+    )
 )
 
 enum class GameMode {

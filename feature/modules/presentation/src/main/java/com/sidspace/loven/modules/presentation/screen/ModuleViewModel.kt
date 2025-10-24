@@ -25,13 +25,13 @@ class ModuleViewModel @Inject constructor(private val repository: ModuleReposito
     val effect = _effect.asSharedFlow()
 
 
-    fun onIntent(intent: ModuleIntent){
-        when(intent){
+    fun onIntent(intent: ModuleIntent) {
+        when (intent) {
             is ModuleIntent.ToLessonsScreen -> toLessonsScreen(intent.idLanguage, intent.idModule)
         }
     }
 
-    fun toLessonsScreen(idLanguage: String, idModule: String){
+    fun toLessonsScreen(idLanguage: String, idModule: String) {
         viewModelScope.launch {
             _effect.emit(ModuleEffect.ToLessonsScreen(idLanguage, idModule))
         }
@@ -45,7 +45,12 @@ class ModuleViewModel @Inject constructor(private val repository: ModuleReposito
                 }
 
                 is DomainResult.Success -> {
-                    _state.update { it.copy(listModules = ResultUi.Success(data.data.map { item -> item.toModuleUi() })) }
+                    _state.update {
+                        it.copy(
+                            listModules =
+                            ResultUi.Success(data.data.map { item -> item.toModuleUi() })
+                        )
+                    }
                 }
             }
         }

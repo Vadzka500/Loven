@@ -106,26 +106,10 @@ fun AuthorizationContent(
         Image(painter = painterResource(R.drawable.image), contentDescription = null, contentScale = ContentScale.Crop)
 
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = stringResource(R.string.authorization_title),
-                fontFamily = Sf_compact,
-                fontWeight = FontWeight.Bold,
-                fontSize = 32.sp,
-                color = MaterialTheme.colorScheme.background,
-                lineHeight = 35.sp,
-                textAlign = TextAlign.Center
-            )
+            AuthorizationTitle()
 
             Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = stringResource(R.string.authorization_body),
-                fontFamily = Sf_compact,
-                fontWeight = FontWeight.Medium,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.background,
-                lineHeight = 20.sp,
-                textAlign = TextAlign.Center
-            )
+            AuthorizationBody()
             Spacer(modifier = Modifier.height(32.dp))
 
             Card(
@@ -159,4 +143,31 @@ fun AuthorizationContent(
             Spacer(modifier = Modifier.height(80.dp))
         }
     }
+}
+
+@Composable
+fun AuthorizationBody() {
+    Text(
+        text = stringResource(R.string.authorization_body),
+        fontFamily = Sf_compact,
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        color = MaterialTheme.colorScheme.background,
+        lineHeight = 20.sp,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+fun AuthorizationTitle(modifier: Modifier = Modifier) {
+    Text(
+        modifier = modifier,
+        text = stringResource(R.string.authorization_title),
+        fontFamily = Sf_compact,
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp,
+        color = MaterialTheme.colorScheme.background,
+        lineHeight = 35.sp,
+        textAlign = TextAlign.Center
+    )
 }

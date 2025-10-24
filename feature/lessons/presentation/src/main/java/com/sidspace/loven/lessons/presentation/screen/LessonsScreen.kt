@@ -146,74 +146,76 @@ fun NoLivesDialog(onClick: () -> Unit, showAds: () -> Unit, modifier: Modifier =
 
         }, dragHandle = null
     ) {
+        NoLivesDialogContent(onClick = onClick, showAds = showAds, modifier = modifier)
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                //.fillMaxHeight(0.5f) // можно ограничить высоту
-                .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
+    }
+}
+
+@Composable
+fun NoLivesDialogContent(modifier: Modifier = Modifier, onClick: () -> Unit, showAds: () -> Unit) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Image(
+            painter = painterResource(R.drawable.img_lose),
+            contentDescription = null,
+            modifier = Modifier.size(128.dp)
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        val textBody = "У вас закончились жизни, подождите восполнения или посмотрите рекламу"
+
+        Text(
+            textBody,
+            fontFamily = Sf_compact,
+            fontWeight = FontWeight.Medium,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(
+            onClick = {
+                onClick()
+            }, colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
         ) {
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Image(
-                painter = painterResource(R.drawable.img_lose),
-                contentDescription = null,
-                modifier = Modifier.size(128.dp)
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            val textBody = "У вас закончились жизни, подождите восполнения или посмотрите рекламу"
-
             Text(
-                textBody,
-                fontFamily = Sf_compact,
-                fontWeight = FontWeight.Medium,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Center
+                "Понятно",
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             )
+        }
 
-            Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-            Button(
-                onClick = {
-                    onClick()
-                }, colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                Text(
-                    "Понятно",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                onClick = {
-                    onClick()
-                    showAds()
-                }, colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                Text(
-                    "Посмотреть рекламу за 1 жизнь",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                )
-            }
+        Button(
+            onClick = {
+                onClick()
+                showAds()
+            }, colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Text(
+                "Посмотреть рекламу за 1 жизнь",
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
         }
     }
-
-
 }
 
 @Composable
@@ -273,9 +275,7 @@ fun LessonItem(
         LaunchedEffect(Unit) {
             isPressed = item.starCount == null
         }
-        //isPressed = item.starCount == null
 
-        var isTap by remember { mutableStateOf(false) }
 
         val offsetY by animateDpAsState(
             targetValue = if (isPressed) 0.dp else 0.dp, animationSpec = tween(durationMillis = 0), label = "offsetY"
@@ -331,46 +331,50 @@ fun LessonItem(
 
                     )
                 }) {
-            Box(
-                modifier = Modifier
-                //.padding(horizontal = 48.dp, vertical = 24.dp)
-                , contentAlignment = Alignment.Center
-            ) {
-
-
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    /*Text(
-                        "1", fontSize = 24.sp, fontWeight = FontWeight.Bold
-                    )*/
-                    val image = when (item.type) {
-                        GameModeUi.LAST_GAME -> R.drawable.img_trophy_1
-                        GameModeUi.DEFAULT -> R.drawable.img_medal
-                        GameModeUi.SWAP -> R.drawable.img_swap
-                    }
-
-                    Image(
-                        painter = painterResource(image),
-                        contentDescription = item.id,
-                        colorFilter = if (item.starCount == null) ColorFilter.tint(Color.Gray.copy(alpha = 0.5f))
-                        else if (image == R.drawable.img_swap) ColorFilter.tint(Color.Green)
-                        else null,
-                        modifier = Modifier.then(
-                            if (item.type == GameModeUi.SWAP) {
-                                Modifier.size(24.dp)
-                            } else Modifier.size(32.dp)
-                        )
-                    )
-
-                }
-
-
-            }
+            LessonItemContent(item)
         }
         StarsContent(
             starCount = item.starCount ?: 0, modifier = Modifier
                 .padding(top = 6.dp)
                 .height(18.dp)
         )
+
+    }
+}
+
+@Composable
+fun LessonItemContent(item: LessonUi, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+        , contentAlignment = Alignment.Center
+    ) {
+
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            /*Text(
+                "1", fontSize = 24.sp, fontWeight = FontWeight.Bold
+            )*/
+            val image = when (item.type) {
+                GameModeUi.LAST_GAME -> R.drawable.img_trophy_1
+                GameModeUi.DEFAULT -> R.drawable.img_medal
+                GameModeUi.SWAP -> R.drawable.img_swap
+            }
+
+            Image(
+                painter = painterResource(image),
+                contentDescription = item.id,
+                colorFilter = if (item.starCount == null) ColorFilter.tint(Color.Gray.copy(alpha = 0.5f))
+                else if (image == R.drawable.img_swap) ColorFilter.tint(Color.Green)
+                else null,
+                modifier = Modifier.then(
+                    if (item.type == GameModeUi.SWAP) {
+                        Modifier.size(24.dp)
+                    } else Modifier.size(32.dp)
+                )
+            )
+
+        }
+
 
     }
 }

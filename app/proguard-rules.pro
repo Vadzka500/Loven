@@ -31,5 +31,3 @@
 -keepnames class com.sidspace.loven.lessons.presentation.navigation.** { *; }
 -keepnames class com.sidspace.loven.game.presentation.navigation.** { *; }
 -keep class com.sidspace.core.data.model.** { *; }
-
--dontobfuscate

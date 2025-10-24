@@ -64,6 +64,7 @@ import com.sidspace.loven.core.presentation.R
 import com.sidspace.loven.core.presentation.model.ResultUi
 import com.sidspace.loven.core.presentation.uikit.Sf_compact
 import com.sidspace.loven.modules.presentation.model.ModuleUi
+import com.sidspace.loven.modules.presentation.uikit.ModuleProgressColor
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -97,7 +98,8 @@ fun ModuleContent(state: State<ModuleState>, onClick: (String, String) -> Unit, 
     Box(modifier = modifier) {
         AnimatedContent(modifier = Modifier.fillMaxSize(), targetState = state.value.listModules, transitionSpec = {
             if (initialState is ResultUi.Success && targetState is ResultUi.Success) {
-                fadeIn(animationSpec = tween(delayMillis = 0)).togetherWith(fadeOut(animationSpec = tween(delayMillis = 0)))
+                fadeIn(animationSpec = tween(delayMillis = 0))
+                    .togetherWith(fadeOut(animationSpec = tween(delayMillis = 0)))
             } else {
                 fadeIn().togetherWith(fadeOut())
             }
@@ -114,7 +116,7 @@ fun ModuleContent(state: State<ModuleState>, onClick: (String, String) -> Unit, 
 @Composable
 fun ModuleList(modifier: Modifier = Modifier, list: List<ModuleUi>, onClick: (String, String) -> Unit) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(vertical = 16.dp),
+        modifier = modifier.fillMaxSize(), contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(list, key = { it.id }) { item ->
@@ -141,6 +143,7 @@ fun ModuleItemPreview(@PreviewParameter(ModuleUiProvider::class) item: ModuleUi)
 
 @Composable
 @Preview
+@Suppress("TooGenericExceptionCaught", "LongMethod")
 fun ModuleItem(
     @PreviewParameter(ModuleUiProvider::class) item: ModuleUi,
     onClick: (String, String) -> Unit,
@@ -210,9 +213,6 @@ fun ModuleItem(
                             } catch (e: Exception) {
                                 isPressed = false
                                 e.printStackTrace()
-                            } finally {
-                                //color = Color.Red
-
                             }
                         },
                         onTap = {
@@ -225,140 +225,160 @@ fun ModuleItem(
                     )
                 }
         ) {
-            Box(
-                modifier = Modifier
-                //.padding(horizontal = 48.dp, vertical = 24.dp)
-                ,
-                contentAlignment = Alignment.Center
-            ) {
-
-                AsyncImage(
-                    model = item.imageUrl,
-                    contentDescription = null,
-                    alpha = 0.6f,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .height(150.dp)
-                        .width(200.dp)
-                        .offset(y = 30.dp, x = -155.dp)
-                        .rotate(55f)
-                )
-
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            item.name,
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = Sf_compact,
-                            color = Color.Black
-                        )
-
-                        if (!item.isEnableModule)
-                            Icon(
-                                imageVector = Icons.Default.Lock,
-                                contentDescription = null,
-                                tint = Color.Gray,
-                                modifier = Modifier.padding(start = 4.dp)
-                            )
-                    }
-
-
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        item.description,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        fontFamily = Sf_compact,
-                        color = Color.Black.copy(alpha = 0.5f)
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    if (!item.isEnableModule) {
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-
-
-                            Text(
-                                "Еще ${item.starsToUnlock}",
-                                fontFamily = Sf_compact,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 16.sp,
-                                color = Color.Black.copy(alpha = 0.6f)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-
-                            Image(
-                                painter = painterResource(R.drawable.img_star),
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                "для разблокировки",
-                                fontFamily = Sf_compact,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 16.sp,
-                                color = Color.Black.copy(alpha = 0.7f)
-                            )
-                        }
-                    } else {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 24.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            BurningFuseTimerWithStarZones(
-                                item, modifier = Modifier
-                                    .weight(1f)
-                            )
-
-                            Spacer(modifier = Modifier.width(12.dp))
-
-                            Text(
-                                text = "${item.usersStars}/${item.maxStars}", fontFamily = Sf_compact,
-                                color = Color.Black,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 14.sp
-                            )
-
-                            Spacer(modifier = Modifier.width(4.dp))
-
-                            Image(
-                                painter = painterResource(R.drawable.img_star),
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
-                    }
-                }
-
-                if (item.isCompleted) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp), contentAlignment = Alignment.TopEnd
-                    ) {
-                        Image(
-                            painter = painterResource(com.sidspace.loven.modules.presentation.R.drawable.img_completed),
-                            contentDescription = null,
-                            modifier = Modifier.size(32.dp)
-                        )
-                    }
-                }
-
-            }
+            ModuleItemContent(item)
         }
 
     }
 
 
+}
+
+@Suppress("MagicNumber")
+@Composable
+fun ModuleItemContent(item: ModuleUi, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+
+        AsyncImage(
+            model = item.imageUrl,
+            contentDescription = null,
+            alpha = 0.6f,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(150.dp)
+                .width(200.dp)
+                .offset(y = 30.dp, x = (-155).dp)
+                .rotate(55f)
+        )
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    item.name,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = Sf_compact,
+                    color = Color.Black
+                )
+
+                if (!item.isEnableModule)
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+            }
+
+
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                item.description,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium,
+                fontFamily = Sf_compact,
+                color = Color.Black.copy(alpha = 0.5f)
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            if (!item.isEnableModule) {
+                DisableModuleContent(item)
+
+            } else {
+                EnableModuleContent(item)
+            }
+        }
+
+        if (item.isCompleted) {
+            addCompletedImage()
+        }
+
+    }
+}
+
+@Composable
+fun EnableModuleContent(item: ModuleUi, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BurningFuseTimerWithStarZones(
+            item, modifier = Modifier
+                .weight(1f)
+        )
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Text(
+            text = "${item.usersStars}/${item.maxStars}", fontFamily = Sf_compact,
+            color = Color.Black,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+
+        Image(
+            painter = painterResource(R.drawable.img_star),
+            contentDescription = null,
+            modifier = Modifier.size(18.dp)
+        )
+    }
+}
+
+@Composable
+fun DisableModuleContent(item: ModuleUi, modifier: Modifier = Modifier) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier) {
+
+
+        Text(
+            "Еще ${item.starsToUnlock}",
+            fontFamily = Sf_compact,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            color = Color.Black.copy(alpha = 0.6f)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+
+        Image(
+            painter = painterResource(R.drawable.img_star),
+            contentDescription = null,
+            modifier = Modifier.size(18.dp)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            "для разблокировки",
+            fontFamily = Sf_compact,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            color = Color.Black.copy(alpha = 0.7f)
+        )
+    }
+}
+
+@Composable
+fun addCompletedImage(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.TopEnd
+    ) {
+        Image(
+            painter = painterResource(com.sidspace.loven.modules.presentation.R.drawable.img_completed),
+            contentDescription = null,
+            modifier = Modifier.size(32.dp)
+        )
+    }
 }
 
 @Composable
@@ -375,9 +395,8 @@ fun BurningFuseTimerWithStarZones(
     // Градиент фитиля
     val flameBrush = Brush.horizontalGradient(
         colors = listOf(
-            //Color(0xFFEF5350).copy(alpha = 0.8f + 0.2f),
-            Color(0xFF4CAF50).copy(alpha = 0.5f + 0.3f),
-            Color(0xFF4CAF50).copy(alpha = 0.5f + 0.3f)
+            ModuleProgressColor.copy(alpha = 0.5f + 0.3f),
+            ModuleProgressColor.copy(alpha = 0.5f + 0.3f),
         )
     )
 

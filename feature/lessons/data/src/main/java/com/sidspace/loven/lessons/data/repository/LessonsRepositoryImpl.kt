@@ -17,9 +17,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+
 class LessonsRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore, private val userManager: UserManager
 ) : LessonsRepository {
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun getLessons(idLanguage: String, idModule: String): DomainResult<List<LessonDomain>> {
 
 

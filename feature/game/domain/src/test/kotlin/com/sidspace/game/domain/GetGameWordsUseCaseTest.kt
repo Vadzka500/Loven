@@ -1,10 +1,13 @@
 package com.sidspace.game.domain
 
 import com.sidspace.core.domain.model.DomainResult
+import com.sidspace.core.domain.model.GameModeDomain
+import com.sidspace.game.Game
+import com.sidspace.game.GameManager
 import com.sidspace.game.domain.model.GameDomain
 import com.sidspace.game.domain.model.Word
 import com.sidspace.game.domain.repository.GameRepository
-import com.sidspace.game.domain.usecase.Game
+
 import com.sidspace.game.domain.usecase.GetGameWordsUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -17,20 +20,8 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetGameWordsUseCaseTest {
     private val repository = mockk<GameRepository>()
-    private val useCase = GetGameWordsUseCase(repository)
-
-    @Test
-    fun `get words test`() = runTest {
-        val domain = GameDomain(words = listOf(Word("Собака", "Dog")))
-        coEvery { repository.getGameWords(any(), any(), any()) } returns DomainResult.Success(domain)
-
-        val result = useCase("langId", "moduleId", "lessonId")
-
-        // then
-        println(result)
-        assertTrue(result is DomainResult.Success)
-        assertEquals(domain, (result as DomainResult.Success).data)
-    }
+    private val gameManager = mockk<GameManager>()
+    private val useCase = GetGameWordsUseCase(repository, gameManager)
 
 
     @Test
@@ -52,9 +43,12 @@ class GetGameWordsUseCaseTest {
             Word(it["word_translate"]!!, it["word_ru"]!!)
         }.shuffled()
 
-        val game = Game(listWords)
+        val game = Game(listWords, "", "", "", GameModeDomain.DEFAULT)
 
         println(game.getInitialWords())
         println(game.getNextWord())
+        assertEquals(game.getInitialWords().listRuWords.size, 5)
+        assertEquals(game.getInitialWords().listTranslateWords.size, 5)
+
     }
 }

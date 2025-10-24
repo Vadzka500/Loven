@@ -83,6 +83,8 @@ import com.sidspace.game.presentation.model.WordsUi
 import com.sidspace.game.presentation.uikit.DefaultCardColor
 import com.sidspace.game.presentation.uikit.InCorrectBackgroundColor
 import com.sidspace.game.presentation.uikit.PressCardColor
+import com.sidspace.game.presentation.uikit.ProgressEndColor
+import com.sidspace.game.presentation.uikit.ProgressStartColor
 import com.sidspace.loven.core.presentation.R
 import com.sidspace.loven.core.presentation.model.GameModeUi
 import com.sidspace.loven.core.presentation.model.ResultUi
@@ -98,6 +100,11 @@ private const val INCORRECT_ANIM_CYCLES_COUNT = 3
 private const val INCORRECT_ANIM_AMPLITUDE = 10F
 private const val INCORRECT_ANIM_CYCLE_DURATION = 250
 
+private const val LONG_DURATION = 1500
+private const val FAST_DURATION = 800
+
+@Suppress("MagicNumber")
+private val DELAYS_SHOW_WORDS = listOf(100, 200, 300, 400)
 
 @Composable
 fun GameScreen(
@@ -146,18 +153,18 @@ fun GameScreen(
         gameViewModel.onIntent(GameIntent.ShowExitDialog)
     }
 
-    GameContent(state = state, effect = gameViewModel.effect, onSelectWords = { wordRu, wordTranslate ->
-        gameViewModel.onIntent(GameIntent.SelectWords(wordRu, wordTranslate))
-    }, toLessons = {
-        gameViewModel.onIntent(GameIntent.ToLessons)
-    }, onBack = {
-        gameViewModel.onIntent(GameIntent.ShowExitDialog)
-    }, onHideExitDialog = {
-        gameViewModel.onIntent(GameIntent.HideExitDialog)
-    }, onExit = { gameViewModel.onIntent(GameIntent.Exit) },
+    GameContent(
+        state = state, effect = gameViewModel.effect, onSelectWords = { wordRu, wordTranslate ->
+            gameViewModel.onIntent(GameIntent.SelectWords(wordRu, wordTranslate))
+        }, onBack = {
+            gameViewModel.onIntent(GameIntent.ShowExitDialog)
+        }, onHideExitDialog = {
+            gameViewModel.onIntent(GameIntent.HideExitDialog)
+        }, onExit = { gameViewModel.onIntent(GameIntent.Exit) },
         toModules = {
             gameViewModel.onIntent(GameIntent.ToModules)
-        }, modifier = modifier)
+        }, modifier = modifier
+    )
 
 }
 
@@ -166,7 +173,6 @@ fun GameScreen(
 fun GameContent(
     state: State<GameState>,
     onSelectWords: (String, String) -> Unit,
-    toLessons: () -> Unit,
     onBack: () -> Unit,
     onExit: () -> Unit,
     toModules: () -> Unit,
@@ -216,7 +222,7 @@ fun GameContent(
             }
 
             is GameResult.SuccessLastGame -> {
-                EndModuleScreen(data.countError, toModules = toModules)
+                EndModuleScreen(toModules = toModules)
             }
         }
     }
@@ -244,9 +250,8 @@ fun ShowExitDialog(onDismiss: () -> Unit, onExit: () -> Unit, modifier: Modifier
     ) {
 
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
-                //.fillMaxHeight(0.5f) // можно ограничить высоту
                 .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -389,15 +394,12 @@ fun InitWords(
                 text = "Выйти",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+            )
         }
     }
 }
 
-private const val LONG_DURATION = 1500
-private const val FAST_DURATION = 800
-
-private val DELAYS = listOf(100, 200, 300, 400)
 
 @Composable
 fun WordColumnList(
@@ -417,18 +419,15 @@ fun WordColumnList(
         contentPadding = PaddingValues(bottom = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        itemsIndexed(words, key = { index, item -> item ?: "null_$index" }) { _, it ->
+        itemsIndexed(words, key = { index, item -> item ?: "null_$index" }) { _, item ->
 
             var isVisible by remember {
                 mutableStateOf(false)
             }
 
-            if (correctWord == it) {
+            if (correctWord == item) {
                 isVisible = false
                 selectWord.value = ""
-                //selectWord = ""
-                //correctPair = correctPair?.copy(first = "")
-
                 clearCorrect()
             }
 
@@ -437,16 +436,14 @@ fun WordColumnList(
                     .fillMaxWidth()
                     .height(94.dp)
             ) {
-                if (it != null) {
+                if (item != null) {
 
 
                     val color = remember {
                         mutableStateOf(Color.Black)
                     }
 
-                    val colorBorder =/* if (wrongPair?.first == it) {
-                         Color.Red
-                     } else */if (selectWord.value == it) PressCardColor
+                    val colorBorder = if (selectWord.value == item) PressCardColor
                     else DefaultCardColor
 
 
@@ -464,7 +461,7 @@ fun WordColumnList(
                         amplitude * damping * sin(t.value)
                     }
 
-                    if (inCorrectWord == it) {
+                    if (inCorrectWord == item) {
                         isAminVisible = true
                         isError = true
                         selectWord.value = ""
@@ -476,11 +473,11 @@ fun WordColumnList(
 
                     //Color(0xFFC8E6C9) green
                     val backgroundColor by animateColorAsState(
-                        targetValue = if (isError) InCorrectBackgroundColor else if (selectWord.value == it) Color(
+                        targetValue = if (isError) InCorrectBackgroundColor else if (selectWord.value == item) Color(
                             0xFFC8E6C9
                         ) else Color.White, animationSpec = if (isError) {
                             tween(durationMillis = 200, easing = LinearEasing)
-                        } else if (selectWord.value == it) {
+                        } else if (selectWord.value == item) {
                             tween(durationMillis = 0)
                         } else {
                             tween(durationMillis = 200, easing = LinearEasing)
@@ -502,7 +499,6 @@ fun WordColumnList(
 
                             isAminVisible = false
 
-
                         }
 
                     }
@@ -516,34 +512,26 @@ fun WordColumnList(
 
                             isError = false
 
-
                         }
-
                     }
 
-
-
-
                     val duration = if (selectedCount == 1) LONG_DURATION else FAST_DURATION
-
-
-
 
                     AnimatedVisibility(
                         visible = isVisible,
                         exit = fadeOut(tween(durationMillis = duration, easing = FastOutSlowInEasing)),
-                        enter = fadeIn(tween(durationMillis = 500, delayMillis = DELAYS.random()))
+                        enter = fadeIn(tween(durationMillis = 500, delayMillis = DELAYS_SHOW_WORDS.random()))
                     ) {
                         ElevatedPressableButton(
                             onClick = {
                                 println("select = " + selectWord)
-                                println("it = " + it)
+                                println("it = " + item)
 
-                                selectWord.value = if (selectWord.value != it) it
+                                selectWord.value = if (selectWord.value != item) item
                                 else ""
                             },
                             borderColor = colorBorder,
-                            onPress = selectWord.value == it,
+                            onPress = selectWord.value == item,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp, vertical = 12.dp)
@@ -554,7 +542,7 @@ fun WordColumnList(
                             backgroundColor = backgroundColor
                         ) {
                             Text(
-                                it,
+                                item,
                                 color = color.value,
                                 fontSize = 16.sp,
                                 fontFamily = Sf_compact,
@@ -572,30 +560,18 @@ fun WordColumnList(
             }
         }
 
-
     }
-
 }
 
 
 @Composable
 fun BurningFuseTimerWithStarZones(
     timer: TimerState,
-    gamemode: GameModeUi
+    gameMode: GameModeUi
 ) {
-
 
     val progress = timer.timeLeft / timer.timeTotal.toFloat()
 
-    // Определение количества звёзд по порогам
-    val stars = when {
-        timer.timeTotal - timer.timeLeft < timer.starThresholds[2] -> 3
-        timer.timeTotal - timer.timeLeft < timer.starThresholds[1] -> 2
-        timer.timeTotal - timer.timeLeft < timer.starThresholds[0] -> 1
-        else -> 0
-    }
-
-    // Анимация горящего фитиля
     val flameAnim by rememberInfiniteTransition().animateFloat(
         initialValue = 0f, targetValue = 1f, animationSpec = infiniteRepeatable(
             animation = tween(500, easing = LinearEasing), repeatMode = RepeatMode.Reverse
@@ -605,8 +581,8 @@ fun BurningFuseTimerWithStarZones(
     // Градиент фитиля
     val flameBrush = Brush.horizontalGradient(
         colors = listOf(
-            Color(0xFFEF5350).copy(alpha = 0.8f + 0.2f * flameAnim),
-            Color(0xFF4CAF50).copy(alpha = 0.5f + 0.3f * flameAnim)
+            ProgressStartColor.copy(alpha = 0.8f + 0.2f * flameAnim),
+            ProgressEndColor.copy(alpha = 0.5f + 0.3f * flameAnim)
         )
     )
 
@@ -638,7 +614,7 @@ fun BurningFuseTimerWithStarZones(
             )
 
             // Делители
-            if(gamemode != GameModeUi.LAST_GAME) {
+            if (gameMode != GameModeUi.LAST_GAME) {
                 timer.starThresholds.drop(1).forEach { threshold ->
                     val position = 1f - (threshold.toFloat() / timer.timeTotal)
                     Box(
@@ -658,36 +634,41 @@ fun BurningFuseTimerWithStarZones(
 
         Spacer(Modifier.height(8.dp))
 
-        if(gamemode != GameModeUi.LAST_GAME) {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                timer.starThresholds.forEachIndexed { index, threshold ->
-                    val position = 1f - (threshold.toFloat() / timer.timeTotal)
-
-                    Row {
-                        repeat(index + 1) {
-                            Image(
-                                painter = painterResource(R.drawable.img_star),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .then(
-                                        if (index == 0) Modifier.padding(start = 3.dp)
-                                        else Modifier
-                                    )
-                                    .size(16.dp)
-                                    .offset {
-                                        IntOffset(
-                                            x = (((barWidth.floatValue) * position) - ((20.dp.value * (index + 1)))).toInt(),
-                                            y = 0
-                                        )
-                                    })
-                        }
-                    }
-
-
-                }
-            }
+        if (gameMode != GameModeUi.LAST_GAME) {
+            TimerStart(timer, barWidth.value)
         }
 
+    }
+}
+
+@Composable
+fun TimerStart( timer: TimerState, barWidth: Float, modifier: Modifier = Modifier) {
+    Box(modifier = Modifier.fillMaxWidth()) {
+        timer.starThresholds.forEachIndexed { index, threshold ->
+            val position = 1f - (threshold.toFloat() / timer.timeTotal)
+
+            Row {
+                repeat(index + 1) {
+                    Image(
+                        painter = painterResource(R.drawable.img_star),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .then(
+                                if (index == 0) Modifier.padding(start = 3.dp)
+                                else Modifier
+                            )
+                            .size(16.dp)
+                            .offset {
+                                IntOffset(
+                                    x = (((barWidth) * position) - ((20.dp.value * (index + 1)))).toInt(),
+                                    y = 0
+                                )
+                            })
+                }
+            }
+
+
+        }
     }
 }
 
@@ -784,6 +765,7 @@ fun ElevatedPressableButton(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("LongMethod")
 @Composable
 @Preview
 fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> Unit, modifier: Modifier = Modifier) {
@@ -805,9 +787,8 @@ fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> 
         ) {
 
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
-                    //.fillMaxHeight(0.5f) // можно ограничить высоту
                     .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -875,7 +856,7 @@ fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
-fun EndModuleScreen(inCorrectCount: Int = 1, toModules: () -> Unit, modifier: Modifier = Modifier) {
+fun EndModuleScreen(toModules: () -> Unit, modifier: Modifier = Modifier) {
 
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
@@ -894,7 +875,7 @@ fun EndModuleScreen(inCorrectCount: Int = 1, toModules: () -> Unit, modifier: Mo
         ) {
 
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     //.fillMaxHeight(0.5f) // можно ограничить высоту
                     .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
@@ -904,11 +885,11 @@ fun EndModuleScreen(inCorrectCount: Int = 1, toModules: () -> Unit, modifier: Mo
                 Text("Поздравляем!", fontFamily = Sf_compact, fontWeight = FontWeight.Bold, fontSize = 24.sp)
                 Spacer(modifier = Modifier.height(24.dp))
 
-                        Image(
-                            painter = painterResource(com.sidspace.game.presentation.R.drawable.img_trophy),
-                            contentDescription = null,
-                            modifier = Modifier.size(80.dp)
-                        )
+                Image(
+                    painter = painterResource(com.sidspace.game.presentation.R.drawable.img_trophy),
+                    contentDescription = null,
+                    modifier = Modifier.size(80.dp)
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -970,9 +951,8 @@ fun EndTimeScreen(toLessons: () -> Unit, modifier: Modifier = Modifier) {
         ) {
 
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
-                    //.fillMaxHeight(0.5f) // можно ограничить высоту
                     .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -1043,9 +1023,8 @@ fun EndLivesScreen(toLessons: () -> Unit, modifier: Modifier = Modifier) {
         ) {
 
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
-                    //.fillMaxHeight(0.5f) // можно ограничить высоту
                     .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
             ) {
 

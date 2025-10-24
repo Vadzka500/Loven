@@ -42,12 +42,13 @@ fun HealthDialog(
     livesCount: Long,
     time: Long?,
     onDismiss: () -> Unit,
-    onShowAds:() -> Unit,
+    onShowAds: () -> Unit,
 ) {
 
 
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false)
+        skipPartiallyExpanded = false
+    )
 
     var isSheetOpen by remember { mutableStateOf(false) }
 
@@ -58,103 +59,8 @@ fun HealthDialog(
                 onDismiss()
             }, dragHandle = null
         ) {
+            HealthDialogSheetContent(livesCount, time, onDismiss, onShowAds)
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    //.fillMaxHeight(0.5f) // можно ограничить высоту
-                    .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        livesCount.toString(),
-                        fontFamily = Sf_compact,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 96.sp,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    Image(
-                        painter = painterResource(R.drawable.img_heart),
-                        contentDescription = null,
-                        modifier = Modifier.size(128.dp)
-                    )
-                }
-
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-
-                if (livesCount < GameConstants.LIVES_MAX_COUNT) {
-
-
-                    time?.let { it ->
-                        val minutes = (it / 60000) % 60
-                        val seconds = (it / 1000) % 60
-
-                        Text(
-                            "Следующая жизнь через ${minutes.let { if (it < 10) "0$it" else it }}:${seconds.let { if (it < 10) "0$it" else it }}" +
-                                    "\nили посмотрите рекламу",
-                            fontFamily = Sf_compact,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center
-                        )
-
-                    }
-                } else {
-                    Text(
-                        "У вас максимальное количество жизней",
-                        fontFamily = Sf_compact,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
-                Spacer(modifier = Modifier.height(24.dp))
-
-
-                Button(
-                    onClick = {
-                        onDismiss()
-                    }, colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
-                ) {
-                    Text(
-                        "Понятно",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                    )
-                }
-
-                if (livesCount < GameConstants.LIVES_MAX_COUNT) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Button(
-                        onClick = {
-                            onDismiss()
-                            onShowAds()
-                        }, colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Text(
-                            "Посмотреть рекламу за 1 жизнь",
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
-                        )
-                    }
-                }
-            }
         }
     }
 
@@ -162,5 +68,119 @@ fun HealthDialog(
         isSheetOpen = true
     }
 
+}
+
+@Composable
+fun HealthDialogSheetContent(
+    livesCount: Long,
+    time: Long?,
+    onDismiss: () -> Unit,
+    onShowAds: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                livesCount.toString(),
+                fontFamily = Sf_compact,
+                fontWeight = FontWeight.Medium,
+                fontSize = 96.sp,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Image(
+                painter = painterResource(R.drawable.img_heart),
+                contentDescription = null,
+                modifier = Modifier.size(128.dp)
+            )
+        }
+
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+
+        if (livesCount < GameConstants.LIVES_MAX_COUNT) {
+            AddTextTimeNextLiveToDialog(time)
+        } else {
+            Text(
+                "У вас максимальное количество жизней",
+                fontFamily = Sf_compact,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+        Spacer(modifier = Modifier.height(24.dp))
+
+
+        Button(
+            onClick = {
+                onDismiss()
+            }, colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            Text(
+                "Понятно",
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+        }
+
+        if (livesCount < GameConstants.LIVES_MAX_COUNT) {
+            AddAdsButtonToDialog(onDismiss, onShowAds)
+        }
+    }
+}
+
+@Composable
+fun AddTextTimeNextLiveToDialog(time: Long?, modifier: Modifier = Modifier) {
+    time?.let { it ->
+        val minutes = (it / 60000) % 60
+        val seconds = (it / 1000) % 60
+
+        Text(
+            "Следующая жизнь через ${minutes.let { if (it < 10) "0$it" else it }}:${seconds.let { if (it < 10) "0$it" else it }}" +
+                    "\nили посмотрите рекламу",
+            fontFamily = Sf_compact,
+            fontWeight = FontWeight.Medium,
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center
+        )
+
+    }
+}
+
+@Composable
+fun AddAdsButtonToDialog(onDismiss: () -> Unit, onShowAds: () -> Unit, modifier: Modifier = Modifier) {
+    Spacer(modifier = Modifier.height(8.dp))
+    Button(
+        onClick = {
+            onDismiss()
+            onShowAds()
+        }, colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        )
+    ) {
+        Text(
+            "Посмотреть рекламу за 1 жизнь",
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        )
+    }
 }
 

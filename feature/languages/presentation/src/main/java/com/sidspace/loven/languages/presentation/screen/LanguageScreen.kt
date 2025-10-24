@@ -91,7 +91,7 @@ fun LanguagesContent(modifier: Modifier = Modifier, state: State<LanguageState>,
 @Composable
 fun ListLanguages(modifier: Modifier = Modifier, list: List<LanguageUi>, onClick: (String) -> Unit) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 16.dp),
+        modifier = modifier.fillMaxSize(), contentPadding = PaddingValues(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(list) { item ->
@@ -100,7 +100,7 @@ fun ListLanguages(modifier: Modifier = Modifier, list: List<LanguageUi>, onClick
     }
 }
 
-@Suppress("TooGenericExceptionCaught", "MagicNumber")
+@Suppress("TooGenericExceptionCaught", "MagicNumber", "LongMethod")
 @Composable
 fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (String) -> Unit) {
 
@@ -167,9 +167,6 @@ fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (Stri
                             } catch (e: Exception) {
                                 isPressed = false
                                 e.printStackTrace()
-                            } finally {
-                                //color = Color.Red
-
                             }
                         },
                         onTap = {
@@ -183,59 +180,64 @@ fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (Stri
                     )
                 }
         ) {
-            Box(
-                modifier = Modifier,
-                contentAlignment = Alignment.Center
-            ) {
-
-                AsyncImage(
-                    model = item.imageUrl,
-                    contentDescription = null,
-                    alpha = 0.6f,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .height(150.dp)
-                        .width(200.dp)
-                        .offset(y = 30.dp, x = -155.dp)
-                        .rotate(55f)
-
-                )
-
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        item.nameLanguage,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = Sf_compact,
-                        color = Color.Black
-                    )
-
-                    if (!item.isEnable) {
-                        Text(
-                            text = "Скоро",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Medium,
-                            fontFamily = Sf_compact,
-                            color = Color.Gray,
-                            modifier = Modifier.padding(top = 8.dp)
-                        )
-                    }
-                }
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .then(
-                            if (item.isEnable)
-                                Modifier.background(Color.White.copy(alpha = 0f))
-                            else
-                                Modifier.background(Color.White.copy(alpha = 0.5f))
-                        )
-                ) { }
-
-            }
+            LanguageCardContent(item)
         }
 
     }
 
+}
+
+@Composable
+fun LanguageCardContent(item: LanguageUi, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+
+        AsyncImage(
+            model = item.imageUrl,
+            contentDescription = null,
+            alpha = 0.6f,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(150.dp)
+                .width(200.dp)
+                .offset(y = 30.dp, x = -155.dp)
+                .rotate(55f)
+
+        )
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                item.nameLanguage,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = Sf_compact,
+                color = Color.Black
+            )
+
+            if (!item.isEnable) {
+                Text(
+                    text = "Скоро",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = Sf_compact,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .then(
+                    if (item.isEnable)
+                        Modifier.background(Color.White.copy(alpha = 0f))
+                    else
+                        Modifier.background(Color.White.copy(alpha = 0.5f))
+                )
+        ) { }
+
+    }
 }

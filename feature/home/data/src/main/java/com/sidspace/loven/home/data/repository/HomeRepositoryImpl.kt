@@ -51,6 +51,7 @@ class HomeRepositoryImpl @Inject constructor(
             googleSignInClient.signOut()
             DomainResult.Success(Unit)
         } catch (e: Exception) {
+            e.printStackTrace()
             DomainResult.Error
         }
     }

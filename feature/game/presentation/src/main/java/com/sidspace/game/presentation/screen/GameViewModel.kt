@@ -11,6 +11,7 @@ import com.sidspace.game.domain.usecase.SaveLessonUseCase
 import com.sidspace.game.presentation.mapper.toWordUi
 import com.sidspace.loven.core.presentation.model.GameModeUi
 import com.sidspace.loven.core.presentation.model.ResultUi
+import com.sidspace.loven.utils.GameConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,10 +38,10 @@ class GameViewModel @Inject constructor(
     lateinit var idLesson: String
 
     private companion object {
-        const val MAX_STARS = 3
-        const val TWO_STARS = 2
-        const val ONE_STAR = 1
-        const val ZERO_STARS = 0
+        const val TIMER_INTERVAL = 1000L
+        const val DELAY_INTERVAL = 800L
+        const val COUNT_STEPS_DELAY = 3
+
     }
 
     fun initParams(idLanguage: String, idModule: String, idLesson: String) {
@@ -110,12 +111,15 @@ class GameViewModel @Inject constructor(
     private fun getStars(): Int {
         return when {
             _state.value.timer.timeTotal - _state.value.timer.timeLeft < _state.value.timer.starThresholds[2] ->
-                MAX_STARS
+                GameConstants.THREE_STARS
+
             _state.value.timer.timeTotal - _state.value.timer.timeLeft < _state.value.timer.starThresholds[1] ->
-                TWO_STARS
+                GameConstants.TWO_STARS
+
             _state.value.timer.timeTotal - _state.value.timer.timeLeft < _state.value.timer.starThresholds[0] ->
-                ONE_STAR
-            else -> ZERO_STARS
+                GameConstants.ONE_STARS
+
+            else -> 0
         }
     }
 
@@ -125,8 +129,11 @@ class GameViewModel @Inject constructor(
         timerJob?.cancel()
         _state.update { it.copy(timer = it.timer.copy(isRunning = true)) }
         timerJob = viewModelScope.launch {
-            while (_state.value.timer.timeLeft > 0 && _state.value.timer.isRunning && _state.value.gameResult == GameResult.None) {
-                delay(1000)
+            while (_state.value.timer.timeLeft > 0
+                && _state.value.timer.isRunning
+                && _state.value.gameResult == GameResult.None
+            ) {
+                delay(TIMER_INTERVAL)
                 _state.update { it.copy(timer = it.timer.copy(timeLeft = it.timer.timeLeft - 1)) }
             }
             if (_state.value.timer.timeLeft <= 0) {
@@ -225,17 +232,17 @@ class GameViewModel @Inject constructor(
 
                     val count = _state.value.countCurrentSelected // читаем уже обновлённое
                     isFast = if (count == 1) false else true
-                    var countSteps = 3
+                    var countSteps = COUNT_STEPS_DELAY
 
                     viewModelScope.launch {
 
                         if (!isFast) {
                             while (!isFast && countSteps > 0) {
-                                delay(800L)
+                                delay(DELAY_INTERVAL)
                                 countSteps--
                             }
                         } else {
-                            delay(800L)
+                            delay(DELAY_INTERVAL)
                         }
 
 

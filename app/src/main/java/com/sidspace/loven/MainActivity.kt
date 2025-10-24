@@ -106,6 +106,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Suppress
 private fun addWords() {
     val db = Firebase.firestore
 
