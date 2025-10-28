@@ -231,6 +231,7 @@ fun ChangeUserContent(changeUser: () -> Unit, modifier: Modifier) {
 }
 
 @Composable
+@Suppress("TooGenericExceptionCaught")
 fun GameButton(toGameClick: () -> Unit) {
     Box(contentAlignment = Alignment.Center) {
 
@@ -308,24 +309,29 @@ fun GameButton(toGameClick: () -> Unit) {
                     )
                 }
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(horizontal = 48.dp, vertical = 24.dp),
-                contentAlignment = Alignment.Center
-            ) {
-
-                Text(
-                    "К игре",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = Sf_compact,
-                    color = Color.Black
-                )
-            }
+            GameButtonContent()
         }
 
     }
 
+}
+
+@Composable
+fun GameButtonContent(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .padding(horizontal = 48.dp, vertical = 24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+
+        Text(
+            "К игре",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = Sf_compact,
+            color = Color.Black
+        )
+    }
 }
 
 @Composable

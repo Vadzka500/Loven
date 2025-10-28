@@ -106,8 +106,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Suppress
-private fun addWords() {
+@Suppress("MagicNumber")
+fun addWords() {
     val db = Firebase.firestore
 
     val batch = db.batch()
@@ -122,7 +122,7 @@ private fun addWords() {
         .filter { it["word_ru"].toString().length <= 21 }
     println("words2 = " + words.size)
 
-    val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    //val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 
     /*scope.launch {

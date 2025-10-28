@@ -43,7 +43,7 @@ class HomeRepositoryImpl @Inject constructor(
 
     }
 
-    @Suppress("TooGenericExceptionCaught")
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     override fun signOut(): DomainResult<Unit> {
         return try {
             userManager.clearUser()
@@ -51,7 +51,6 @@ class HomeRepositoryImpl @Inject constructor(
             googleSignInClient.signOut()
             DomainResult.Success(Unit)
         } catch (e: Exception) {
-            e.printStackTrace()
             DomainResult.Error
         }
     }

@@ -19,10 +19,6 @@ import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetGameWordsUseCaseTest {
-    private val repository = mockk<GameRepository>()
-    private val gameManager = mockk<GameManager>()
-    private val useCase = GetGameWordsUseCase(repository, gameManager)
-
 
     @Test
     fun `test game object`() = runTest {
@@ -45,8 +41,7 @@ class GetGameWordsUseCaseTest {
 
         val game = Game(listWords, "", "", "", GameModeDomain.DEFAULT)
 
-        println(game.getInitialWords())
-        println(game.getNextWord())
+
         assertEquals(game.getInitialWords().listRuWords.size, 5)
         assertEquals(game.getInitialWords().listTranslateWords.size, 5)
 

@@ -145,19 +145,22 @@ fun HealthDialogSheetContent(
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
 fun AddTextTimeNextLiveToDialog(time: Long?, modifier: Modifier = Modifier) {
-    time?.let { it ->
-        val minutes = (it / 60000) % 60
-        val seconds = (it / 1000) % 60
+    time?.let { data ->
+        val minutes = (data / 60000) % 60
+        val seconds = (data / 1000) % 60
 
         Text(
-            "Следующая жизнь через ${minutes.let { if (it < 10) "0$it" else it }}:${seconds.let { if (it < 10) "0$it" else it }}" +
+            "Следующая жизнь через ${minutes.let { if (it < 10) "0$it" else it }}:" +
+                    "${seconds.let { if (it < 10) "0$it" else it }}" +
                     "\nили посмотрите рекламу",
             fontFamily = Sf_compact,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = modifier
         )
 
     }
@@ -165,7 +168,7 @@ fun AddTextTimeNextLiveToDialog(time: Long?, modifier: Modifier = Modifier) {
 
 @Composable
 fun AddAdsButtonToDialog(onDismiss: () -> Unit, onShowAds: () -> Unit, modifier: Modifier = Modifier) {
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = modifier.height(8.dp))
     Button(
         onClick = {
             onDismiss()

@@ -9,3 +9,4 @@ val InCorrectBackgroundColor = Color(0xFFFFCDD2)
 
 val ProgressStartColor = Color(0xFFEF5350)
 val ProgressEndColor = Color(0xFF4CAF50)
+val WhiteCardColor = Color(0xFFC8E6C9)

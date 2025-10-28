@@ -21,7 +21,8 @@ import javax.inject.Inject
 class LessonsRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore, private val userManager: UserManager
 ) : LessonsRepository {
-    @Suppress("TooGenericExceptionCaught")
+
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     override suspend fun getLessons(idLanguage: String, idModule: String): DomainResult<List<LessonDomain>> {
 
 
@@ -58,7 +59,7 @@ class LessonsRepositoryImpl @Inject constructor(
                     )
                 }
             }
-            println("list = " + listUserLessons)
+
 
             DomainResult.Success(lessons.documents.sortedBy {
                 it.get("name").toString().replace("lesson ", "").toInt()
@@ -66,7 +67,7 @@ class LessonsRepositoryImpl @Inject constructor(
                 it.idLesson.replace("lesson ", "").toInt()
             }))
         } catch (e: Exception) {
-            println("error" + e.printStackTrace())
+
             DomainResult.Error
         }
 

@@ -22,7 +22,7 @@
 
 
 -optimizationpasses 1
-
+-dontobfuscate
 
 -keepnames class com.sidspace.loven.authorization.presentation.navigation.** { *; }
 -keepnames class com.sidspace.loven.home.presentation.navigation.** { *; }

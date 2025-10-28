@@ -188,6 +188,7 @@ fun LanguageCard(modifier: Modifier = Modifier, item: LanguageUi, onClick: (Stri
 }
 
 @Composable
+@Suppress("MagicNumber")
 fun LanguageCardContent(item: LanguageUi, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier,

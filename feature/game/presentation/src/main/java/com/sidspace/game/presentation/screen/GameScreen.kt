@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.sidspace.game.presentation.screen
 
 import androidx.activity.compose.BackHandler
@@ -85,6 +87,7 @@ import com.sidspace.game.presentation.uikit.InCorrectBackgroundColor
 import com.sidspace.game.presentation.uikit.PressCardColor
 import com.sidspace.game.presentation.uikit.ProgressEndColor
 import com.sidspace.game.presentation.uikit.ProgressStartColor
+import com.sidspace.game.presentation.uikit.WhiteCardColor
 import com.sidspace.loven.core.presentation.R
 import com.sidspace.loven.core.presentation.model.GameModeUi
 import com.sidspace.loven.core.presentation.model.ResultUi
@@ -282,7 +285,7 @@ fun ShowExitDialog(onDismiss: () -> Unit, onExit: () -> Unit, modifier: Modifier
     }
 }
 
-
+@Suppress("LongMethod")
 @Composable
 fun InitWords(
     words: WordsUi,
@@ -379,29 +382,35 @@ fun InitWords(
 
         BurningFuseTimerWithStarZones(timer = timer, words.type)
 
-        Box(
+        ExitButton(onBack)
+    }
+}
+
+@Composable
+fun ExitButton(onBack: () -> Unit, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = 24.dp), contentAlignment = Alignment.BottomCenter
+    ) {
+        Text(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 24.dp), contentAlignment = Alignment.BottomCenter
-        ) {
-            Text(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable {
-                        onBack()
-                    }
-                    .padding(8.dp),
-                text = "Выйти",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-            )
-        }
+                .clip(RoundedCornerShape(8.dp))
+                .clickable {
+                    onBack()
+                }
+                .padding(8.dp),
+            text = "Выйти",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+        )
     }
 }
 
 
 @Composable
+@Suppress("LongMethod")
 fun WordColumnList(
     words: List<String?>,
     selectedCount: Int,
@@ -465,17 +474,14 @@ fun WordColumnList(
                         isAminVisible = true
                         isError = true
                         selectWord.value = ""
-                        //selectWord = ""
-                        //wrongPair = wrongPair?.copy(first = "")
                         clearInCorrect()
                     }
 
-
-                    //Color(0xFFC8E6C9) green
                     val backgroundColor by animateColorAsState(
-                        targetValue = if (isError) InCorrectBackgroundColor else if (selectWord.value == item) Color(
-                            0xFFC8E6C9
-                        ) else Color.White, animationSpec = if (isError) {
+                        targetValue = if (isError) InCorrectBackgroundColor
+                        else if (selectWord.value == item) WhiteCardColor
+                        else Color.White,
+                        animationSpec = if (isError) {
                             tween(durationMillis = 200, easing = LinearEasing)
                         } else if (selectWord.value == item) {
                             tween(durationMillis = 0)
@@ -483,8 +489,6 @@ fun WordColumnList(
                             tween(durationMillis = 200, easing = LinearEasing)
                         }
                     )
-                    //val backgroundColor = remember { Animatable(Color.White) }
-
 
                     LaunchedEffect(isAminVisible) {
 
@@ -500,7 +504,6 @@ fun WordColumnList(
                             isAminVisible = false
 
                         }
-
                     }
 
                     LaunchedEffect(isError) {
@@ -524,9 +527,6 @@ fun WordColumnList(
                     ) {
                         ElevatedPressableButton(
                             onClick = {
-                                println("select = " + selectWord)
-                                println("it = " + item)
-
                                 selectWord.value = if (selectWord.value != item) item
                                 else ""
                             },
@@ -565,6 +565,7 @@ fun WordColumnList(
 
 
 @Composable
+@Suppress("MagicNumber")
 fun BurningFuseTimerWithStarZones(
     timer: TimerState,
     gameMode: GameModeUi
@@ -642,8 +643,8 @@ fun BurningFuseTimerWithStarZones(
 }
 
 @Composable
-fun TimerStart( timer: TimerState, barWidth: Float, modifier: Modifier = Modifier) {
-    Box(modifier = Modifier.fillMaxWidth()) {
+fun TimerStart(timer: TimerState, barWidth: Float, modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxWidth()) {
         timer.starThresholds.forEachIndexed { index, threshold ->
             val position = 1f - (threshold.toFloat() / timer.timeTotal)
 
@@ -674,6 +675,7 @@ fun TimerStart( timer: TimerState, barWidth: Float, modifier: Modifier = Modifie
 
 
 @OptIn(ExperimentalComposeUiApi::class)
+@Suppress("TooGenericExceptionCaught")
 @Composable
 fun ElevatedPressableButton(
     onClick: () -> Unit,
@@ -765,7 +767,7 @@ fun ElevatedPressableButton(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Suppress("LongMethod")
+@Suppress("LongMethod", "MagicNumber")
 @Composable
 @Preview
 fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> Unit, modifier: Modifier = Modifier) {

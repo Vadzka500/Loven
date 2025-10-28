@@ -1,47 +1,56 @@
 {
-  "project_info": {
-    "project_number": "629800082652",
-    "project_id": "loven-683cc",
-    "storage_bucket": "loven-683cc.firebasestorage.app"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:629800082652:android:89a870294ed86c254d6819",
-        "android_client_info": {
-          "package_name": "com.sidspace.loven"
-        }
-      },
-      "oauth_client": [
+    "project_info": {
+        "project_number": "629800082652",
+        "firebase_url": "https://loven-683cc-default-rtdb.firebaseio.com",
+        "project_id": "loven-683cc",
+        "storage_bucket": "loven-683cc.firebasestorage.app"
+    },
+    "client": [
         {
-          "client_id": "629800082652-6a5unjhteoncd8v55ha1asorr11v2nj9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.sidspace.loven",
-            "certificate_hash": "a90b0c70ad1d1d3b3f579efc0b55d128e121dfad"
-          }
-        },
-        {
-          "client_id": "629800082652-s7etv1crmf7supnd8i71stn0vfo7jc9r.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCZFtkCKeY9xk1ZFZ9iTyxMiZzT3bx_vBs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "629800082652-s7etv1crmf7supnd8i71stn0vfo7jc9r.apps.googleusercontent.com",
-              "client_type": 3
+            "client_info": {
+                "mobilesdk_app_id": "1:629800082652:android:89a870294ed86c254d6819",
+                "android_client_info": {
+                    "package_name": "com.sidspace.loven"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "629800082652-6a5unjhteoncd8v55ha1asorr11v2nj9.apps.googleusercontent.com",
+                    "client_type": 1,
+                    "android_info": {
+                        "package_name": "com.sidspace.loven",
+                        "certificate_hash": "a90b0c70ad1d1d3b3f579efc0b55d128e121dfad"
+                    }
+                },
+                {
+                    "client_id": "629800082652-kmen2inpql1rtm5ehe05ibkrcu8pi9i0.apps.googleusercontent.com",
+                    "client_type": 1,
+                    "android_info": {
+                        "package_name": "com.sidspace.loven",
+                        "certificate_hash": "b14c1cf91e0becbec03277c711d058bc0030e5d0"
+                    }
+                },
+                {
+                    "client_id": "629800082652-s7etv1crmf7supnd8i71stn0vfo7jc9r.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyCZFtkCKeY9xk1ZFZ9iTyxMiZzT3bx_vBs"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "629800082652-s7etv1crmf7supnd8i71stn0vfo7jc9r.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
             }
-          ]
         }
-      }
-    }
-  ],
-  "configuration_version": "1"
+    ],
+    "configuration_version": "1"
 }
