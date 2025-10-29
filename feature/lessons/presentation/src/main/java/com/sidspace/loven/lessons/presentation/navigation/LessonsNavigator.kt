@@ -16,8 +16,6 @@ fun NavGraphBuilder.lessonsNavGraph(
 
     composable<LessonsRoute> { navBackStackEntry ->
         val lessons: LessonsRoute = navBackStackEntry.toRoute()
-        println(lessons.idLanguage)
-        println(lessons.idModule)
         LessonsScreen(
             modifier = Modifier
                 .fillMaxSize()

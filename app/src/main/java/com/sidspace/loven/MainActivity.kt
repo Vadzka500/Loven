@@ -114,13 +114,10 @@ fun addWords() {
 
     var words = listOf(
         mapOf("word_translate" to "style", "word_ru" to "стиль"),
-
         )
 
-    println("words1 = " + words.size)
     words = words.distinctBy { it["word_translate"] }.distinctBy { it["word_ru"] }
         .filter { it["word_ru"].toString().length <= 21 }
-    println("words2 = " + words.size)
 
     //val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 

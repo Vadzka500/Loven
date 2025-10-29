@@ -389,10 +389,6 @@ fun BurningFuseTimerWithStarZones(
 ) {
     val progress = item.usersStars.toFloat() / item.maxStars
 
-    println("pregress = " + progress)
-
-
-    // Градиент фитиля
     val flameBrush = Brush.horizontalGradient(
         colors = listOf(
             ModuleProgressColor.copy(alpha = 0.5f + 0.3f),
@@ -405,11 +401,7 @@ fun BurningFuseTimerWithStarZones(
     Box(
         modifier = modifier
             .height(12.dp)
-            .background(Color.Gray.copy(alpha = 0.3f), shape = RoundedCornerShape(6.dp))
-            .onGloballyPositioned { coords ->
-                //barWidth.floatValue = coords.size.width.toFloat()
-            }) {
-        // Прогресс
+            .background(Color.Gray.copy(alpha = 0.3f), shape = RoundedCornerShape(6.dp))) {
         Box(
             modifier = Modifier
                 .fillMaxHeight()

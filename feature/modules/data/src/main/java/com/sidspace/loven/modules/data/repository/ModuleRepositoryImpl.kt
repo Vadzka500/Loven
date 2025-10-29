@@ -32,16 +32,6 @@ class ModuleRepositoryImpl @Inject constructor(
         }
         usersModules = getUsersModules(id)
 
-        /*modules.documents.forEach { item ->
-            if (item.data!!["name"].toString() == "Модуль 17") {
-                firestore.collection(FirestoreCollections.LANGUAGE).document(id)
-                    .collection(FirestoreCollections.MODULES).document(item.id).delete().addOnSuccessListener {
-
-                    }
-            }
-        }*/
-
-
         return DomainResult.Success(
             modules.toDomain(
                 id,

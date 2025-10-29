@@ -74,6 +74,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -133,7 +134,6 @@ fun GameScreen(
                 }
 
                 GameEffect.Exit -> {
-                    println("exit")
                     onBack()
                 }
 
@@ -189,7 +189,6 @@ fun GameContent(
         ResultUi.Error -> Unit
         ResultUi.Loading -> Unit
         is ResultUi.Success -> {
-            println("get new list")
             InitWords(
                 words = data.data,
                 timer = state.value.timer,
@@ -260,7 +259,7 @@ fun ShowExitDialog(onDismiss: () -> Unit, onExit: () -> Unit, modifier: Modifier
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            val textBody = "Вы действительно хотите выйти из урока?"
+            val textBody = stringResource(com.sidspace.game.presentation.R.string.lesson_exit_title)
 
             Text(
                 textBody,
@@ -338,14 +337,9 @@ fun InitWords(
 
 
                 LaunchedEffect(selectWord.value, selectTranslateWord.value) {
-                    println("call event")
                     if (selectWord.value!!.isNotEmpty() && selectTranslateWord.value!!.isNotEmpty()) {
                         onSelectWords(selectWord.value!!, selectTranslateWord.value!!)
                     }
-                }
-
-                LaunchedEffect(words.listWordsRu) {
-                    println("words count = " + words.listWordsRu.size)
                 }
 
                 WordColumnList(
@@ -691,12 +685,9 @@ fun ElevatedPressableButton(
 
     fun pressLogic() {
         isPressed = !isPressed
-        println("press = " + isPressed)
-        //if (!onPress) isPressed = false
     }
 
     if (!onPress && isPressed && isTap) {
-        println("call")
         isTap = false
         pressLogic()
     }
@@ -767,7 +758,7 @@ fun ElevatedPressableButton(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Suppress("LongMethod", "MagicNumber")
+@Suppress( "MagicNumber")
 @Composable
 @Preview
 fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> Unit, modifier: Modifier = Modifier) {
@@ -795,7 +786,12 @@ fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> 
             ) {
 
 
-                Text("Поздравляем!", fontFamily = Sf_compact, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+                Text(
+                    stringResource(com.sidspace.game.presentation.R.string.complete_title),
+                    fontFamily = Sf_compact,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp
+                )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row {
                     repeat(starCount) {
@@ -808,22 +804,8 @@ fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> 
                 }
                 Spacer(modifier = Modifier.height(24.dp))
 
-                var textBody: String
-
-                if (inCorrectCount == 0) {
-                    textBody = "Вы не допустили ни одной ошибки!"
-                } else if (inCorrectCount == 1) {
-                    textBody = "Вы допустили всего одну ошибку!"
-                } else if (inCorrectCount == 2) {
-                    textBody = "Вы допустили всего две ошибки!"
-                } else if (inCorrectCount == 3) {
-                    textBody = "Вы допустили всего три ошибки!"
-                } else {
-                    textBody = "Вы допустили много ошибок, но ничего страшного)"
-                }
-
                 Text(
-                    textBody,
+                    getTextTitle(inCorrectCount),
                     fontFamily = Sf_compact,
                     fontWeight = FontWeight.Medium,
                     fontSize = 18.sp,
@@ -841,7 +823,7 @@ fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> 
                         containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
-                    Text("Вернуться к урокам")
+                    Text(stringResource(com.sidspace.game.presentation.R.string.back_to_lessons))
                 }
             }
         }
@@ -852,6 +834,20 @@ fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> 
         isSheetOpen = true
     }
 
+}
+
+fun getTextTitle(inCorrectCount: Int): String {
+    return if (inCorrectCount == 0) {
+        "Вы не допустили ни одной ошибки!"
+    } else if (inCorrectCount == 1) {
+        "Вы допустили всего одну ошибку!"
+    } else if (inCorrectCount == 2) {
+        "Вы допустили всего две ошибки!"
+    } else if (inCorrectCount == 3) {
+        "Вы допустили всего три ошибки!"
+    } else {
+        "Вы допустили много ошибок, но ничего страшного)"
+    }
 }
 
 
@@ -879,12 +875,11 @@ fun EndModuleScreen(toModules: () -> Unit, modifier: Modifier = Modifier) {
             Column(
                 modifier = modifier
                     .fillMaxWidth()
-                    //.fillMaxHeight(0.5f) // можно ограничить высоту
                     .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
 
-                Text("Поздравляем!", fontFamily = Sf_compact, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+                Text(stringResource(com.sidspace.game.presentation.R.string.complete_title), fontFamily = Sf_compact, fontWeight = FontWeight.Bold, fontSize = 24.sp)
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Image(
@@ -895,7 +890,7 @@ fun EndModuleScreen(toModules: () -> Unit, modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                val textBody = "Вы прошли модуль"
+                val textBody = stringResource(com.sidspace.game.presentation.R.string.module_completed)
 
 
 
@@ -918,13 +913,12 @@ fun EndModuleScreen(toModules: () -> Unit, modifier: Modifier = Modifier) {
                         containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
-                    Text("Вернуться к модулям")
+                    Text(stringResource(com.sidspace.game.presentation.R.string.back_to_modules))
                 }
             }
         }
     }
 
-    // Основной экран
     LaunchedEffect(Unit) {
         isSheetOpen = true
     }
@@ -968,7 +962,7 @@ fun EndTimeScreen(toLessons: () -> Unit, modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                val textBody = "У вас закончилось время, попробуйте еще раз"
+                val textBody = stringResource(com.sidspace.game.presentation.R.string.lose_time)
 
                 Text(
                     textBody,
@@ -989,13 +983,12 @@ fun EndTimeScreen(toLessons: () -> Unit, modifier: Modifier = Modifier) {
                         containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
-                    Text("Вернуться к урокам")
+                    Text(stringResource(com.sidspace.game.presentation.R.string.back_to_lessons))
                 }
             }
         }
     }
 
-    // Основной экран
     LaunchedEffect(Unit) {
         isSheetOpen = true
     }
@@ -1040,7 +1033,7 @@ fun EndLivesScreen(toLessons: () -> Unit, modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                val textBody = "У вас закончились жизни("
+                val textBody = stringResource(com.sidspace.game.presentation.R.string.empty_health_title)
 
                 Text(
                     textBody,
@@ -1061,13 +1054,12 @@ fun EndLivesScreen(toLessons: () -> Unit, modifier: Modifier = Modifier) {
                         containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
-                    Text("Вернуться к урокам")
+                    Text(stringResource(com.sidspace.game.presentation.R.string.back_to_lessons))
                 }
             }
         }
     }
 
-    // Основной экран
     LaunchedEffect(Unit) {
         isSheetOpen = true
     }

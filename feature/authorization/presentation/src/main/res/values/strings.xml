@@ -2,4 +2,5 @@
 <resources>
     <string name="authorization_body">Объединяй карточки, запоминай слова\n и осваивай новые языки легко\n и интересно</string>
     <string name="authorization_title">Добро пожаловать\n в Loven!</string>
+    <string name="start_with_google_title">Начать c Google</string>
 </resources>

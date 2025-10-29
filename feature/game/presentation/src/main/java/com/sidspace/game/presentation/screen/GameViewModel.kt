@@ -150,16 +150,12 @@ class GameViewModel @Inject constructor(
         job = CoroutineScope(Dispatchers.IO).launch {
             val listJob = list.toList()
             list.clear()
-            println("start job = $listJob")
             when (val data = getUpdatedListUseCase(listJob)) {
                 DomainResult.Error -> Unit
                 is DomainResult.Success -> {
-                    println("update1 = " + data.data)
                     val isEnd = data.data.let {
                         it.listRuWords.all { it == null } && it.listTranslateWords.all { it == null }
                     }
-
-                    println("is end = " + isEnd)
 
                     if (isEnd) {
                         val starsCount = getStars()
@@ -250,10 +246,7 @@ class GameViewModel @Inject constructor(
 
 
                         if (job?.isActive != true && list.isNotEmpty()) {
-                            println("start job 1")
                             startJob()
-                        } else {
-                            println("start job 2 = " + list)
                         }
 
                     }

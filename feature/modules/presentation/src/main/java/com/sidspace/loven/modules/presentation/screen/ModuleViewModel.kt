@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sidspace.core.domain.model.DomainResult
 import com.sidspace.loven.core.presentation.model.ResultUi
 import com.sidspace.loven.modules.domain.repository.ModuleRepository
+import com.sidspace.loven.modules.domain.usecase.GetModulesUseCase
 import com.sidspace.loven.modules.presentation.mapper.toModuleUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ModuleViewModel @Inject constructor(private val repository: ModuleRepository) : ViewModel() {
+class ModuleViewModel @Inject constructor(private val getModulesUseCase: GetModulesUseCase) : ViewModel() {
 
     private val _state = MutableStateFlow(ModuleState())
     val state = _state.asStateFlow()
@@ -39,7 +40,7 @@ class ModuleViewModel @Inject constructor(private val repository: ModuleReposito
 
     fun getModules(idLanguage: String) {
         viewModelScope.launch {
-            when (val data = repository.getModulesByLanguage(idLanguage)) {
+            when (val data = getModulesUseCase(idLanguage)) {
                 DomainResult.Error -> {
                     _state.update { it.copy(listModules = ResultUi.Error) }
                 }

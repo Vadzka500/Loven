@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -43,9 +42,9 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AuthorizationScreen(
+    modifier: Modifier = Modifier,
     toHomeScreen: () -> Unit,
     authorizationViewModel: AuthorizationViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
 ) {
 
     val state = authorizationViewModel.state.collectAsState()
@@ -131,7 +130,7 @@ fun AuthorizationContent(
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(
-                        text = "Начать c Google",
+                        text = stringResource(R.string.start_with_google_title),
                         fontFamily = Sf_compact,
                         fontWeight = FontWeight.Medium,
                         fontSize = 16.sp,

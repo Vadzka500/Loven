@@ -1,6 +1,7 @@
 package com.sidspace.loven.home.presentation.screen
 
 import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -61,10 +62,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlin.math.sin
 import kotlin.random.Random
 
-
-
-
-
 @Composable
 
 fun HomeScreen(
@@ -76,7 +73,7 @@ fun HomeScreen(
 
     val state = homeViewModel.state.collectAsState()
 
-    val context = LocalContext.current as Activity
+    val context = LocalActivity.current
 
     LaunchedEffect(Unit) {
 
@@ -100,7 +97,7 @@ fun HomeScreen(
             HomeIntent.ChangeUser
         )
     }, onShowAds = {
-        homeViewModel.showAds(context)
+        homeViewModel.showAds(context!!)
     }, modifier = modifier)
 
 }
@@ -145,37 +142,6 @@ fun HomeContent(
                 }
             }
 
-            /*AnimatedContent(
-                targetState = id, modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) { _ ->
-
-                user.let {
-                    if (it is ResultUi.Success) {
-                        UserContent(
-                            user = it.data,
-                            modifier = Modifier.fillMaxWidth().weight(1f)
-                        )
-                    }
-                }
-
-                *//*when (val data = user) {
-                    is ResultUi.Success -> {
-                        UserContent(
-                            user = data.data,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f)
-                        )
-                    }
-
-                    else -> {
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
-                }*//*
-            }*/
-
             AnimatedContent(targetState = id) { state ->
 
                 user.let {
@@ -183,15 +149,6 @@ fun HomeContent(
                         GameButton(toGameClick)
                     }
                 }
-                /*when (state) {
-                    is ResultUi.Success -> {
-                        GameButton(toGameClick)
-                    }
-
-                    else -> {
-
-                    }
-                }*/
             }
 
 

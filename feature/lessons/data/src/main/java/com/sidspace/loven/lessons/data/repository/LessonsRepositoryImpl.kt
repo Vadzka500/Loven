@@ -49,7 +49,6 @@ class LessonsRepositoryImpl @Inject constructor(
                         }[listUserLessons.size].id, 0
                     )
                 )?.apply {
-                    println("add item")
                     listUserLessons.add(
                         UserLesson(
                             this, lessons.documents.sortedBy {
@@ -91,8 +90,6 @@ class LessonsRepositoryImpl @Inject constructor(
                 .collection(FirestoreCollections.MODULES).document(idModule).collection(FirestoreCollections.LESSON)
                 .get().await()
 
-        println("lesson = " + lessonsSnapshot.documents.toString())
-
         return lessonsSnapshot.toUserLessons()
     }
 
@@ -120,7 +117,6 @@ class LessonsRepositoryImpl @Inject constructor(
                 .collection(FirestoreCollections.MODULES).document(idModule).collection(FirestoreCollections.LESSON)
                 .add(UserLessonFirebase(lesson.idLesson, lesson.starCount)).await()
 
-        println("✅ Lesson added with ID = ${ref.id}")
         return ref.id
     }
 }

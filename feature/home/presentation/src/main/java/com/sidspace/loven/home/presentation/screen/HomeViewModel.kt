@@ -42,10 +42,6 @@ class HomeViewModel @Inject constructor(
         getBackgroundWords()
     }
 
-    fun loadAds(activity: Activity){
-        adsManager.load(activity)
-    }
-
     fun showAds(activity: Activity) {
         adsManager.show(activity)
     }

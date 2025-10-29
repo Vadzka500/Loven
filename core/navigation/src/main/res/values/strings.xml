@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="select_language">Выберите язык</string>
+    <string name="select_module">Выберите модуль</string>
+    <string name="select_lesson">Выберите урок</string>
+</resources>

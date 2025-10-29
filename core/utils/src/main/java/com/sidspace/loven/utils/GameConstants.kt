@@ -17,9 +17,4 @@ object GameConstants {
     const val ONE_STAR_THRESHOLD = 120
     const val TWO_STAR_THRESHOLD = 90
     const val THREE_STAR_THRESHOLD = 50
-
-    const val GAME_TIME_ALL = 120
-    const val GAME_TIME_FOR_THREE_STAR = 1
-    const val GAME_TIME_FOR_TWO_STAR = 1
-    const val GAME_TIME_FOR_ONE_STAR = 1
 }

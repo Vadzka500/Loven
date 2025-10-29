@@ -25,19 +25,6 @@ class AuthorizationRepositoryImpl @Inject constructor(
 
     override suspend fun checkAccount(): AuthDomainResult {
         return if (firebaseAuth.currentUser != null) {
-            println("name = " + firebaseAuth.currentUser?.displayName)
-
-
-            /*val user = getUserFromFirebase()
-
-            if (user.exists()) {
-                userManager.initUser(
-                    user.toUserSession()
-                )
-            } else {
-                saveAccount()
-            }*/
-
             AuthDomainResult.Authorized
         } else {
             AuthDomainResult.Unauthorized
@@ -46,7 +33,6 @@ class AuthorizationRepositoryImpl @Inject constructor(
 
     override suspend fun saveAccount(): DomainResult<Unit> {
         return if (firebaseAuth.currentUser != null) {
-            println("name 1 = " + firebaseAuth.currentUser?.displayName)
 
             var user = getUserFromFirebase()
 

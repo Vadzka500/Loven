@@ -2,7 +2,6 @@ package com.sidspace.loven.authorization.domain.usecase
 
 
 
-import com.sidspace.core.domain.model.DomainResult
 import com.sidspace.loven.authorization.domain.model.AuthDomainResult
 import com.sidspace.loven.authorization.domain.repository.AuthorizationRepository
 import javax.inject.Inject

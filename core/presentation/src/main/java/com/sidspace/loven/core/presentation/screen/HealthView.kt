@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -113,7 +114,7 @@ fun HealthDialogSheetContent(
             AddTextTimeNextLiveToDialog(time)
         } else {
             Text(
-                "У вас максимальное количество жизней",
+                stringResource(R.string.max_health_title),
                 fontFamily = Sf_compact,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
@@ -178,7 +179,7 @@ fun AddAdsButtonToDialog(onDismiss: () -> Unit, onShowAds: () -> Unit, modifier:
         )
     ) {
         Text(
-            "Посмотреть рекламу за 1 жизнь",
+            stringResource(R.string.view_ads_title),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()

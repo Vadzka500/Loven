@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,8 +58,6 @@ fun LovenTopBar(
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route?.substringBefore("/")
 
-    println("current rpute = " + currentRoute)
-    println("current rpute 2 = " + Home::class.qualifiedName)
     val showTopBar = when (currentRoute) {
         null -> false
         Home::class.qualifiedName -> false
@@ -70,9 +69,9 @@ fun LovenTopBar(
     val isHideNavigationIcon = currentRoute == GameRoute::class.qualifiedName
 
     val title = when (currentRoute) {
-        Language::class.qualifiedName -> "Выберите язык"
-        ModuleRoute::class.qualifiedName -> "Выберите модуль"
-        LessonsRoute::class.qualifiedName -> "Выберите урок"
+        Language::class.qualifiedName -> stringResource(com.sidspace.core.navigation.R.string.select_language)
+        ModuleRoute::class.qualifiedName -> stringResource(com.sidspace.core.navigation.R.string.select_module)
+        LessonsRoute::class.qualifiedName -> stringResource(com.sidspace.core.navigation.R.string.select_lesson)
         else -> ""
     }
 
@@ -98,7 +97,6 @@ fun LovenTopBar(
 
             },
             colors = TopAppBarDefaults.mediumTopAppBarColors(
-                //containerColor = Color(0xFF6200EE), // фиолетовый, можно поменять
                 titleContentColor = MaterialTheme.colorScheme.onBackground
             ),
             modifier = modifier

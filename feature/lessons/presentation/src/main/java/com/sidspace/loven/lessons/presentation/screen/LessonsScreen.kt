@@ -225,8 +225,6 @@ fun LessonsList(
     onSelectLesson: (String, String, String) -> Unit
 ) {
 
-
-    // Таблица весов для каждого mod (0..7)
     val weights = listOf(
         CENTER to CENTER,
         CENTER to RIGHT,
@@ -351,9 +349,6 @@ fun LessonItemContent(item: LessonUi, modifier: Modifier = Modifier) {
 
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            /*Text(
-                "1", fontSize = 24.sp, fontWeight = FontWeight.Bold
-            )*/
             val image = when (item.type) {
                 GameModeUi.LAST_GAME -> R.drawable.img_trophy_1
                 GameModeUi.DEFAULT -> R.drawable.img_medal

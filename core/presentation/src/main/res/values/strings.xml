@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="max_health_title">У вас максимальное количество жизней</string>
+    <string name="view_ads_title">Посмотреть рекламу за 1 жизнь</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lesson_exit_title">Вы действительно хотите выйти из урока?</string>
+    <string name="complete_title">Поздравляем!</string>
+    <string name="back_to_lessons">Вернуться к урокам</string>
+    <string name="empty_health_title">У вас закончились жизни(</string>
+    <string name="lose_time">У вас закончилось время, попробуйте еще раз</string>
+    <string name="back_to_modules">Вернуться к модулям</string>
+    <string name="module_completed">Вы прошли модуль</string>
+</resources>

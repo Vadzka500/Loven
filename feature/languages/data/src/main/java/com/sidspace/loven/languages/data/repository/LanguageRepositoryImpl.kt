@@ -15,10 +15,6 @@ class LanguageRepositoryImpl @Inject constructor(private val firestore: Firebase
         return suspendCoroutine { cont ->
             firestore.collection(FirestoreCollections.LANGUAGE).get().addOnSuccessListener { result ->
 
-                for(data in result.documents){
-                    println(data.id)
-                }
-
                 cont.resume(DomainResult.Success(result.toLanguagesDomain()))
             }.addOnFailureListener { error ->
                 cont.resume(DomainResult.Error)

@@ -92,11 +92,6 @@ class Game(
     }
 
     fun checkWord(wordRu: String, wordTranslate: String): Boolean {
-        println("list = " + startList)
-        println("get = " + startList.find { it.wordRu == wordRu })
-        println("ru = " + wordRu)
-        println("trans = " + wordTranslate)
-
         val isCorrect =
             if (isEnglishOnly(wordTranslate)) startList.find { it.wordRu == wordRu }?.wordTranslate == wordTranslate
             else startList.find { it.wordRu == wordTranslate }?.wordTranslate == wordRu

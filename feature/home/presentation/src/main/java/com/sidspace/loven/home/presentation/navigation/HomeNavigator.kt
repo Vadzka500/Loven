@@ -1,6 +1,5 @@
 package com.sidspace.loven.home.presentation.navigation
 
-import androidx.compose.animation.EnterTransition
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
