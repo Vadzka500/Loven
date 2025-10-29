@@ -44,8 +44,6 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
-    //implementation(libs.javax.inject)
-
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore.ktx)
 

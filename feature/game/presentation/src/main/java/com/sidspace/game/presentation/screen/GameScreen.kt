@@ -573,7 +573,7 @@ fun BurningFuseTimerWithStarZones(
         )
     )
 
-    // Градиент фитиля
+
     val flameBrush = Brush.horizontalGradient(
         colors = listOf(
             ProgressStartColor.copy(alpha = 0.8f + 0.2f * flameAnim),
@@ -600,7 +600,7 @@ fun BurningFuseTimerWithStarZones(
                 .onGloballyPositioned { coords ->
                     barWidth.floatValue = coords.size.width.toFloat()
                 }) {
-            // Прогресс
+
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -608,7 +608,7 @@ fun BurningFuseTimerWithStarZones(
                     .background(flameBrush, shape = RoundedCornerShape(12.dp))
             )
 
-            // Делители
+
             if (gameMode != GameModeUi.LAST_GAME) {
                 timer.starThresholds.drop(1).forEach { threshold ->
                     val position = 1f - (threshold.toFloat() / timer.timeTotal)
@@ -713,7 +713,7 @@ fun ElevatedPressableButton(
 
     Surface(
         shape = RoundedCornerShape(12.dp), color = color, tonalElevation = elevation, // для Material3
-        shadowElevation = elevation, // для Material2
+        shadowElevation = elevation,
         modifier = modifier
 
             .graphicsLayer {
@@ -728,7 +728,6 @@ fun ElevatedPressableButton(
                 detectTapGestures(onPress = {
                     pressLogic()
 
-                    //isPressed = true
                     try {
                         awaitRelease()
                         if (isTap) {
@@ -742,8 +741,6 @@ fun ElevatedPressableButton(
                         e.printStackTrace()
                     }
                 }, onTap = {
-                    //isPressed = !isPressed
-
                     onClick()
                 }
 
@@ -829,7 +826,7 @@ fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> 
         }
     }
 
-    // Основной экран
+
     LaunchedEffect(Unit) {
         isSheetOpen = true
     }

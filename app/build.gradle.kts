@@ -68,8 +68,6 @@ dependencies {
     implementation(projects.core.data)
 
     implementation(libs.hilt.android)
-    //implementation(libs.google.firebase.auth.ktx)
-    //implementation(libs.firebase.auth.common)
     implementation(libs.firebase.auth)
     implementation(libs.androidx.profileinstaller)
     "baselineProfile"(project(":baselineprofile"))
@@ -106,8 +104,5 @@ dependencies {
 
     implementation(libs.firebase.crashlytics.ndk)
 
-    //auth
-    //implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.auth)
-    //implementation(libs.google.firebase.firestore.ktx)
 }

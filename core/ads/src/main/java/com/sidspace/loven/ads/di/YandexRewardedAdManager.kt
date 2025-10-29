@@ -60,7 +60,7 @@ class YandexRewardedAdManager @Inject constructor(private val userManager: UserM
                 override fun onAdDismissed() {
                     Log.d("YandexAd", "🚪 Ad dismissed")
                     destroy()
-                    load(activity) // подгружаем снова
+                    load(activity)
                 }
 
                 override fun onAdClicked() {

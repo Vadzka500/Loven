@@ -286,7 +286,7 @@ fun LessonItem(
         )
 
         val elevation by animateDpAsState(
-            targetValue = if (isPressed) 1.dp else 10.dp, // при нажатии тень меньше
+            targetValue = if (isPressed) 1.dp else 10.dp,
             label = "elevation"
         )
 
@@ -296,11 +296,10 @@ fun LessonItem(
 
         androidx.compose.material3.Surface(
 
-            shape = CircleShape, color = color, tonalElevation = elevation, // для Material3
-            shadowElevation = elevation, // для Material2
+            shape = CircleShape, color = color, tonalElevation = elevation,
+            shadowElevation = elevation,
             modifier = Modifier
                 .size(64.dp)
-                //.padding(horizontal = 16.dp)
 
                 .graphicsLayer {
                     scaleX = scale

@@ -145,7 +145,7 @@ fun addWords() {
 
             val doc = db.collection("languages").document("efdMkdOPEKagGccx2euX").collection("modules")
                 .document(module.id)
-                .collection("lessons").document("lesson ${index + 1}")// авто id
+                .collection("lessons").document("lesson ${index + 1}")
 
             batch.set(doc, lessonData)
 
@@ -154,7 +154,7 @@ fun addWords() {
 
                 val docRef = db.collection("languages").document("efdMkdOPEKagGccx2euX").collection("modules")
                     .document(module.id)
-                    .collection("lessons").document(doc.id).collection("words").document() // авто id
+                    .collection("lessons").document(doc.id).collection("words").document()
                 batch.set(docRef, word)
             }
 
