@@ -31,9 +31,32 @@ jobs:
               with:
                   reports: '**/build/**/detekt.xml'
 
-    Release_Build:
+    Tests:
         runs-on: ubuntu-latest
         needs: Detekt
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: set up JDK
+              uses: actions/setup-java@v4
+              with:
+                  distribution: 'temurin'
+                  java-version: 17
+
+            - uses: gradle/gradle-build-action@v3
+              with:
+                  cache-disabled: true
+
+            - name: Grant execute permission for gradlew
+              run: chmod +x gradlew
+
+            - name: Run Unit Tests
+              run: ./gradlew testDebugUnitTest --stacktrace
+
+    Release_Build:
+        runs-on: ubuntu-latest
+        needs: Tests
         steps:
             -   name: Checkout
                 uses: actions/checkout@v4

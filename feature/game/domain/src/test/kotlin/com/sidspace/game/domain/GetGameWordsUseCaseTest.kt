@@ -42,8 +42,8 @@ class GetGameWordsUseCaseTest {
         val game = Game(listWords, "", "", "", GameModeDomain.DEFAULT)
 
 
-        assertEquals(game.getInitialWords().listRuWords.size, 5)
-        assertEquals(game.getInitialWords().listTranslateWords.size, 5)
+        assertEquals(game.getInitialWords().listRuWords.size, 6)
+        assertEquals(game.getInitialWords().listTranslateWords.size, 6)
 
     }
 }
