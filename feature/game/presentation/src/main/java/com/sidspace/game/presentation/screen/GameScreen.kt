@@ -758,7 +758,7 @@ fun ElevatedPressableButton(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Suppress( "MagicNumber")
+@Suppress("MagicNumber")
 @Composable
 @Preview
 fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> Unit, modifier: Modifier = Modifier) {
@@ -836,6 +836,7 @@ fun EndGameScreen(starCount: Int = 2, inCorrectCount: Int = 1, toLessons: () -> 
 
 }
 
+@Suppress("MagicNumber")
 fun getTextTitle(inCorrectCount: Int): String {
     return if (inCorrectCount == 0) {
         "Вы не допустили ни одной ошибки!"
@@ -879,7 +880,12 @@ fun EndModuleScreen(toModules: () -> Unit, modifier: Modifier = Modifier) {
             ) {
 
 
-                Text(stringResource(com.sidspace.game.presentation.R.string.complete_title), fontFamily = Sf_compact, fontWeight = FontWeight.Bold, fontSize = 24.sp)
+                Text(
+                    stringResource(com.sidspace.game.presentation.R.string.complete_title),
+                    fontFamily = Sf_compact,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp
+                )
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Image(
