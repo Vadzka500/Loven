@@ -18,7 +18,6 @@
 - Kotlin, Coroutines, Flow
 - Jetpack Compose, Navigation Compose
 - Hilt (DI)
-- Retrofit + OkHttp
 - Firebase
 - Room
 - Baseline Profiles, R8 / ProGuard

@@ -21,6 +21,4 @@ class LanguageRepositoryImpl @Inject constructor(private val firestore: Firebase
             }
         }
     }
-
-
 }

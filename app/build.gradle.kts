@@ -1,3 +1,6 @@
+import org.gradle.kotlin.dsl.androidTest
+import org.gradle.kotlin.dsl.sourceSets
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,7 +8,6 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
-
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.baselineprofile)
 
@@ -19,8 +21,8 @@ android {
         applicationId = "com.sidspace.loven"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 9
-        versionName = "1.0.8"
+        versionCode = 10
+        versionName = "1.0.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,7 +57,6 @@ android {
     buildFeatures {
         compose = true
     }
-
 
 }
 

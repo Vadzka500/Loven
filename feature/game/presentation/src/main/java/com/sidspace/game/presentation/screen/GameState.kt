@@ -20,8 +20,8 @@ data class GameState(
 )
 
 data class TimerState(
-    val timeTotal: Int = 120,
-    val timeLeft: Int = 120,
+    val timeTotal: Int = GameConstants.TOTAL_TIME,
+    val timeLeft: Int = GameConstants.TOTAL_TIME,
     val isRunning: Boolean = false,
     val starThresholds: List<Int> = listOf(
         GameConstants.ONE_STAR_THRESHOLD, GameConstants.TWO_STAR_THRESHOLD,
