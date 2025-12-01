@@ -23,8 +23,8 @@ class IsCorrectWordUseCaseTest {
 
     @Test
     fun `is correct words`() = runTest {
-        val wordRu = "Дом"
-        val wordTranslate = "house"
+        val wordRu = "Футболка"
+        val wordTranslate = "t-shirt"
 
         val gameMock = mockk<Game>(relaxed = true)
         coEvery { gameManager.getGame() } returns gameMock

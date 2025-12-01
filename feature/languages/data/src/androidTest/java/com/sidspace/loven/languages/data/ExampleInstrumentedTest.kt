@@ -1,7 +1,7 @@
 package com.sidspace.loven.languages.data
 
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -11,12 +11,10 @@ import com.sidspace.loven.languages.domain.model.LanguageDomain
 import com.sidspace.loven.languages.domain.repository.LanguageRepository
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
-
+import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
-import org.junit.Before
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -58,7 +56,7 @@ class ExampleInstrumentedTest {
         val data = (result as DomainResult.Success).data
         assertTrue("Список языков не должен быть пустым", data.isNotEmpty())
 
-        println("✅ Полученные языки: ${data.map { it.nameLanguage }}")
+        println("Полученные языки: ${data.map { it.nameLanguage }}")
     }
 
     @Test

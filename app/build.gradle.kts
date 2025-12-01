@@ -10,7 +10,6 @@ plugins {
     alias(libs.plugins.kapt)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.baselineprofile)
-
 }
 
 android {
@@ -21,9 +20,8 @@ android {
         applicationId = "com.sidspace.loven"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 10
-        versionName = "1.0.9"
-
+        versionCode = 13
+        versionName = "1.0.12"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -47,13 +45,16 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }
@@ -72,7 +73,6 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.androidx.profileinstaller)
     "baselineProfile"(project(":baselineprofile"))
-
 
 
     kapt(libs.hilt.compiler)
