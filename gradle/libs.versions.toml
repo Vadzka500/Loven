@@ -27,7 +27,10 @@ javax-inject = "1"
 kotlinxCoroutinesCore = "1.10.2"
 
 kotlinxCoroutinesTest = "1.7.1"
-mobileads = "7.16.0"
+mobileads = "7.18.1"
+mobileads-mediator-google = "23.6.0.10"
+
+google-ads = "23.6.0"
 mockk = "1.14.6"
 
 nav_version = "2.8.4"
@@ -104,6 +107,9 @@ androidx-navigation-common-ktx = { group = "androidx.navigation", name = "naviga
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 
 mobileads = { module = "com.yandex.android:mobileads", version.ref = "mobileads" }
+mobileads-mediator-google = { module = "com.yandex.ads.mediation:mobileads-google", version.ref = "mobileads-mediator-google" }
+
+google-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "google-ads" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 play-services-auth-v2070 = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuthVersion" }
 viewmodel-compose-navigatiom = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation" }

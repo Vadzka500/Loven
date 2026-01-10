@@ -46,6 +46,9 @@ dependencies {
     implementation(projects.core.data)
 
     implementation(libs.mobileads)
+    implementation(libs.mobileads.mediator.google)
+    //implementation(libs.mobileads.mediator.ads)
+    implementation(libs.google.ads)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
