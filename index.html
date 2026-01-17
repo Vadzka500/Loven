@@ -61,8 +61,28 @@
             flex-wrap: wrap;
         }
         .download-buttons img { height: 60px; width: auto; }
+
+        .contact-section {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: #dfe6e9;
+            border-radius: 15px;
+        }
+        .email-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #0984e3;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .email-link:hover { background: #74b9ff; }
         
-        footer { text-align: center; margin-top: 50px; color: #b2bec3; font-size: 0.9em; }
+        footer { text-align: center; margin-top: 50px; color: #b2bec3; font-size: 0.9em; padding-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -120,8 +140,14 @@
     </div>
 </section>
 
+<section class="contact-section">
+    <h2>📩 Обратная связь</h2>
+    <p>Есть вопросы или предложения по улучшению игры? Пишите нам!</p>
+    <a href="mailto:sidspacesoft@gmail.com" class="email-link">sidspacesoft@gmail.com</a>
+</section>
+
 <footer>
-    <p>&copy; 2024 Loven Project. Разработано с помощью Kotlin & Compose.</p>
+    <p>&copy; 2026 Loven Project. Разработано SidSpace.</p>
 </footer>
 
 </body>
