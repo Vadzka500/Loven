@@ -1,39 +1,128 @@
-# 🧠 Loven
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loven — Изучай языки играя</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        h1 { color: #2d3436; font-size: 2.5em; margin-bottom: 10px; }
+        h2 { color: #0984e3; border-bottom: 2px solid #0984e3; padding-bottom: 5px; margin-top: 40px; }
+        .description { font-size: 1.2em; color: #636e72; max-width: 700px; margin: 0 auto; }
+        
+        .stack-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .stack-item { background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold; color: #0277bd; }
 
-Образовательная Android-игра для изучения словарного запаса.  
-Игрок соединяет слова на разных языках, развивая память и внимание.  
-Поддерживаются уровни от **A1 до C2+**, включая тематические модули:  
-повседневность, наука, культура, философия, идиомы и многое другое.
+        .screenshots {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .screenshots img {
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            max-width: 100%;
+            height: auto;
+        }
+        .screenshots img:hover { transform: scale(1.05); }
 
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .download-buttons img { height: 60px; width: auto; }
+        
+        footer { text-align: center; margin-top: 50px; color: #b2bec3; font-size: 0.9em; }
+    </style>
+</head>
+<body>
 
-## 🚀 Основная идея
+<header>
+    <h1>🧠 Loven</h1>
+    <p class="description">
+        Образовательная Android-игра для изучения словарного запаса. <br>
+        Развивай память и внимание, соединяя слова на разных языках.
+    </p>
+</header>
 
-**Loven** — это тренажёр для изучения слов,  
-где нужно правильно сопоставлять пары «слово — перевод».  
-Ошибки уменьшают количество жизней, а при успешных ответах  
-выпадают новые слова из словаря.
+<section>
+    <h2>🚀 Основная идея</h2>
+    <p>
+        <strong>Loven</strong> — это тренажёр, где нужно правильно сопоставлять пары «слово — перевод». 
+        Уровни сложности варьируются от <strong>A1 до C2+</strong>. Проходи тематические модули: 
+        повседневность, наука, культура, философия и идиомы.
+    </p>
+    <p>Ошибки уменьшают количество жизней, а успешные ответы открывают новые слова из словаря.</p>
+</section>
 
-## Стек
-- Clean Architecture, MVI
-- Kotlin, Coroutines, Flow
-- Jetpack Compose, Navigation Compose
-- Hilt (DI)
-- Firebase
-- Room
-- Baseline Profiles, R8 / ProGuard
+<section>
+    <h2>🛠 Стек технологий</h2>
+    <div class="stack-list">
+        <div class="stack-item">Clean Architecture / MVI</div>
+        <div class="stack-item">Kotlin / Coroutines / Flow</div>
+        <div class="stack-item">Jetpack Compose</div>
+        <div class="stack-item">Hilt (DI)</div>
+        <div class="stack-item">Firebase</div>
+        <div class="stack-item">Room DB</div>
+        <div class="stack-item">R8 / ProGuard</div>
+    </div>
+</section>
 
-## Скриншоты
-<p align="center">
-  <img src="screenshots/screenshot_home.png" width="220" />
-  <img src="screenshots/screenshot_modules.png" width="220" />
-  <img src="screenshots/screenshot_lessons.png" width="220" />
-  <img src="screenshots/screenshot_game.png" width="220" />
-</p>
+<section>
+    <h2>📸 Скриншоты</h2>
+    <div class="screenshots">
+        <img src="screenshots/screenshot_home.png" width="200" alt="Home Screen">
+        <img src="screenshots/screenshot_modules.png" width="200" alt="Modules Screen">
+        <img src="screenshots/screenshot_lessons.png" width="200" alt="Lessons Screen">
+        <img src="screenshots/screenshot_game.png" width="200" alt="Game Screen">
+    </div>
+</section>
 
-## Скачать
-<a href="https://play.google.com/store/apps/details?id=com.sidspace.loven">
-  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200" height="100"/>
-</a>
-<a href="https://www.rustore.ru/catalog/app/com.sidspace.loven">
-  <img src="https://i.postimg.cc/KYjhz4w2/logo-color-dark.png" width="200" height="100"/>
-</a>
+<section>
+    <h2>📥 Скачать приложение</h2>
+    <div class="download-buttons">
+        <a href="https://play.google.com/store/apps/details?id=com.sidspace.loven" target="_blank">
+            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play">
+        </a>
+        <a href="https://www.rustore.ru/catalog/app/com.sidspace.loven" target="_blank">
+            <img src="https://i.postimg.cc/KYjhz4w2/logo-color-dark.png" alt="Download on RuStore">
+        </a>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2024 Loven Project. Разработано с помощью Kotlin & Compose.</p>
+</footer>
+
+</body>
+</html>
